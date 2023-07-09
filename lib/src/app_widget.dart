@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-import 'features/auth/login/login_screen.dart';
-import 'features/home/home_screen.dart';
+import 'package:tweet_app/src/routes/custom_routes.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
@@ -17,22 +14,8 @@ class AppWidget extends StatelessWidget {
         primaryColor: Colors.indigo,
         brightness: Brightness.light,
       ),
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.userChanges(),
-        builder: ((context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            if (snapshot.hasData) {
-              return const HomeScreen();
-            } else {
-              return const LoginScreen();
-            }
-          }
-        }),
-      ),
+      routes: customRoutes,
+      initialRoute: 'authCheck',
     );
   }
 }
