@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:mobx/mobx.dart';
 import 'package:tweet_app/src/features/auth/components/auth_button.dart';
-
+import 'package:tweet_app/src/features/auth/login/store/login_store.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:validatorless/validatorless.dart';
 
 import '../components/auth_header.dart';
@@ -14,7 +16,26 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  late final LoginStore loginStore;
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    loginStore = LoginStore();
+    autorun((_) {
+      if (loginStore.screenState == LoginState.error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Authentication error: ${loginStore.errorMessage!}'),
+          ),
+        );
+      }
+    });
+    when((_) => loginStore.screenState == LoginState.success, () {
+      Navigator.pushReplacementNamed(context, 'authCheck');
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +49,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 title: 'Sign in to your Account',
                 subTitle: 'Enter your email and password to acess your account',
               ),
+              const SizedBox(
+                height: 30,
+              ),
               Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: TextFormField(
@@ -39,33 +63,53 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextStyle(color: Theme.of(context).primaryColor),
                     prefixIcon: const Icon(Icons.email),
                   ),
-                  validator: Validatorless.email('Email is not valid'),
-                  onChanged: (value) {},
+                  validator: Validatorless.multiple([
+                    Validatorless.required(
+                        'Validation error: The field is obligatory.'),
+                    Validatorless.email(
+                        'Validation error: The field requires an email address'),
+                  ]),
+                  onChanged: (value) {
+                    loginStore.loginModel =
+                        loginStore.loginModel.copyWith(email: value);
+                  },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    TextFormField(
-                      decoration: InputDecoration(
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        border: const OutlineInputBorder(),
-                        labelText: 'Password',
-                        labelStyle:
-                            TextStyle(color: Theme.of(context).primaryColor),
-                        prefixIcon: const Icon(Icons.password),
-                        suffixIcon: GestureDetector(
-                          onTap: () {},
-                          child: const Icon(Icons.remove_red_eye),
+              Observer(
+                builder: (_) => Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      TextFormField(
+                        decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.auto,
+                          border: const OutlineInputBorder(),
+                          labelText: 'Password',
+                          labelStyle:
+                              TextStyle(color: Theme.of(context).primaryColor),
+                          prefixIcon: const Icon(Icons.password),
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              loginStore.changePasswordVisibility();
+                            },
+                            child: const Icon(Icons.remove_red_eye),
+                          ),
                         ),
+                        obscureText: loginStore.isPasswordFieldObscure,
+                        validator: Validatorless.multiple([
+                          Validatorless.required(
+                              'Validation error: The field is obligatory.'),
+                        ]),
+                        onChanged: (value) {
+                          loginStore.loginModel =
+                              loginStore.loginModel.copyWith(password: value);
+                        },
                       ),
-                      onChanged: (value) {},
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: GestureDetector(
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      GestureDetector(
                         child: Text(
                           'Forget Password?',
                           style: TextStyle(
@@ -74,15 +118,26 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: AuthButton(
-                  labelButton: 'Login',
-                  onTap: () {},
+              Observer(
+                builder: (_) => Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: AuthButton(
+                    labelButton: loginStore.screenState == LoginState.loading
+                        ? 'Loading'
+                        : 'Login',
+                    onTap: () {
+                      if (loginStore.screenState != LoginState.loading &&
+                          loginStore.screenState != LoginState.success) {
+                        if (_formKey.currentState!.validate()) {
+                          loginStore.loginAction();
+                        }
+                      }
+                    },
+                  ),
                 ),
               ),
               Text.rich(
@@ -94,7 +149,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       text: ' Register',
                       style: TextStyle(
                           color: Theme.of(context).primaryColor, fontSize: 16),
-                      recognizer: TapGestureRecognizer()..onTap = () {},
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.pushReplacementNamed(
+                              context, 'authRegistration');
+                        },
                     ),
                   ],
                 ),
