@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:tweet_app/src/features/auth/components/auth_button.dart';
+import 'package:tweet_app/src/features/auth/components/auth_error_snackbar.dart';
 import 'package:tweet_app/src/features/auth/login/store/login_store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:validatorless/validatorless.dart';
@@ -24,11 +25,8 @@ class _LoginScreenState extends State<LoginScreen> {
     loginStore = LoginStore();
     autorun((_) {
       if (loginStore.screenState == LoginState.error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Authentication error: ${loginStore.errorMessage!}'),
-          ),
-        );
+        showAuthErrorSnackBar(
+            context: context, message: loginStore.errorMessage!);
       }
     });
     when((_) => loginStore.screenState == LoginState.success, () {
