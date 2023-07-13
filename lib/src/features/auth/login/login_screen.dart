@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     when((_) => loginStore.screenState == LoginState.success, () {
       loginStore.setScreenState(newState: LoginState.idle);
-      Modular.to.navigate('/authCheck');
+      Modular.to.navigate('../home/');
     });
     super.initState();
   }
@@ -151,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: Theme.of(context).primaryColor, fontSize: 16),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          Modular.to.navigate('/registration');
+                          Modular.to.navigate('./registration');
                         },
                     ),
                   ],

@@ -9,7 +9,7 @@ import 'package:tweet_app/src/features/auth/components/auth_header.dart';
 import 'package:validatorless/validatorless.dart';
 import 'package:tweet_app/src/features/auth/registration/store/registration_store.dart';
 
-import '../utils/validators.dart';
+import '../../../core/utils/validators.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -33,7 +33,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     });
     when((_) => registrationStore.screenState == RegistrationState.success, () {
       registrationStore.setScreenState(newState: RegistrationState.idle);
-      Modular.to.navigate('/login');
+      Modular.to.navigate('/');
     });
     super.initState();
   }
@@ -151,7 +151,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           color: Theme.of(context).primaryColor, fontSize: 16),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          Modular.to.navigate('/login');
+                          Modular.to.navigate('./');
                         },
                     ),
                   ],

@@ -1,16 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthServiceFirebase {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseAuth firebaseAuth;
 
-  AuthServiceFirebase();
+  AuthServiceFirebase({required this.firebaseAuth});
 
   Future<String?> loginUser({
     required String email,
     required String password,
   }) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
+      await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
@@ -29,7 +29,7 @@ class AuthServiceFirebase {
     required String password,
   }) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      await firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
@@ -47,7 +47,7 @@ class AuthServiceFirebase {
     required String email,
   }) async {
     try {
-      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      await firebaseAuth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'user-not-found':
