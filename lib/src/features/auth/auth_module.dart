@@ -10,10 +10,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthModule extends Module {
   @override
   List<Bind> get binds => [
-        Bind.factory(
-            (i) => AuthServiceFirebase(firebaseAuth: FirebaseAuth.instance)),
-        Bind.singleton((i) => RegistrationStore(authService: i())),
-        Bind.singleton((i) => LoginStore(authService: i())),
+        Bind.instance<FirebaseAuth>(FirebaseAuth.instance),
+        Bind.factory((i) => AuthServiceFirebase(firebaseAuth: i())),
+        Bind.lazySingleton((i) => RegistrationStore(authService: i())),
+        Bind.lazySingleton((i) => LoginStore(authService: i())),
       ];
 
   @override
