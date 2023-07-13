@@ -1,5 +1,5 @@
 import 'package:mobx/mobx.dart';
-import 'package:tweet_app/src/features/auth/services/auth_service.dart';
+import 'package:tweet_app/src/core/services/auth_service_firebase.dart';
 import '../models/login_request_model.dart';
 
 part 'login_store.g.dart';
@@ -9,7 +9,9 @@ class LoginStore = _LoginStore with _$LoginStore;
 enum LoginState { idle, success, error, loading }
 
 abstract class _LoginStore with Store {
-  AuthService authService = AuthService();
+  late final AuthServiceFirebase authService;
+
+  _LoginStore({required this.authService});
 
   LoginRequestModel loginModel = LoginRequestModel(email: '', password: '');
 

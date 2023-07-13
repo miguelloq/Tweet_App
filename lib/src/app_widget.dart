@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tweet_app/src/routes/custom_routes.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Tweet App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -14,8 +14,8 @@ class AppWidget extends StatelessWidget {
         primaryColor: Colors.indigo,
         brightness: Brightness.light,
       ),
-      routes: customRoutes,
-      initialRoute: 'authCheck',
+      routeInformationParser: Modular.routeInformationParser,
+      routerDelegate: Modular.routerDelegate,
     );
   }
 }

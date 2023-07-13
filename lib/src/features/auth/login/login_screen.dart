@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:tweet_app/src/features/auth/components/auth_button.dart';
 import 'package:tweet_app/src/features/auth/components/auth_error_snackbar.dart';
@@ -22,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    loginStore = LoginStore();
+    loginStore = Modular.get<LoginStore>();
     autorun((_) {
       if (loginStore.screenState == LoginState.error) {
         showAuthErrorSnackBar(
@@ -30,7 +31,8 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     });
     when((_) => loginStore.screenState == LoginState.success, () {
-      Navigator.pushReplacementNamed(context, 'authCheck');
+      loginStore.setScreenState(newState: LoginState.idle);
+      Modular.to.navigate('/authCheck');
     });
     super.initState();
   }
@@ -149,8 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: Theme.of(context).primaryColor, fontSize: 16),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          Navigator.pushReplacementNamed(
-                              context, 'authRegistration');
+                          Modular.to.navigate('/registration');
                         },
                     ),
                   ],

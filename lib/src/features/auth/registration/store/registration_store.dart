@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:tweet_app/src/features/auth/registration/models/registration_request_model.dart';
-import 'package:tweet_app/src/features/auth/services/auth_service.dart';
+import 'package:tweet_app/src/core/services/auth_service_firebase.dart';
 
 part 'registration_store.g.dart';
 
@@ -9,7 +9,9 @@ enum RegistrationState { idle, success, error, loading }
 class RegistrationStore = _RegistrationStore with _$RegistrationStore;
 
 abstract class _RegistrationStore with Store {
-  AuthService authService = AuthService();
+  late final AuthServiceFirebase authService;
+
+  _RegistrationStore({required this.authService});
 
   @observable
   RegistrationRequestModel registrationModel =

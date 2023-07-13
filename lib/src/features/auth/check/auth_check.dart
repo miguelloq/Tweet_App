@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class AuthCheck extends StatefulWidget {
   const AuthCheck({super.key});
@@ -17,9 +18,9 @@ class _AuthCheckState extends State<AuthCheck> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (firebaseAuth.currentUser != null) {
-        Navigator.pushReplacementNamed(context, 'home');
+        Modular.to.navigate('/home');
       } else {
-        Navigator.pushReplacementNamed(context, 'authLogin');
+        Modular.to.navigate('/login');
       }
     });
 
@@ -28,8 +29,10 @@ class _AuthCheckState extends State<AuthCheck> {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(),
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }
