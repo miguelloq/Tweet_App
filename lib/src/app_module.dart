@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tweet_app/src/features/auth/auth_module.dart';
+import 'package:tweet_app/src/features/config/config_module.dart';
 import 'package:tweet_app/src/features/home/home_module.dart';
 import 'package:tweet_app/src/splash_page.dart';
 
@@ -19,5 +20,6 @@ class AppModule extends Module {
           guards: [AuthGuard(authInstance: FirebaseAuth.instance)],
         ),
         ModuleRoute('/home', module: HomeModule()),
+        ModuleRoute('/config', module: ConfigModule())
       ];
 }
