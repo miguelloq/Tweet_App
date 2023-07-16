@@ -57,4 +57,13 @@ class AuthServiceFirebase {
     }
     return null;
   }
+
+  Future<String?> logoutUser() async {
+    try {
+      await firebaseAuth.signOut();
+    } on FirebaseAuthException catch (e) {
+      return e.code;
+    }
+    return null;
+  }
 }

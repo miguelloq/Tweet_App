@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:tweet_app/src/features/home/services/logout_service.dart';
+import 'package:tweet_app/src/features/home/store/home_store.dart';
+import 'package:tweet_app/src/features/home/submodules/feed/feed_module.dart';
+import 'package:tweet_app/src/features/home/submodules/search/search_module.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,10 +13,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final LogoutService service;
+  final HomeStore homeStore = Modular.get<HomeStore>();
+
   @override
   void initState() {
-    service = LogoutService();
     super.initState();
   }
 
@@ -23,14 +26,49 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Home Screen'),
       ),
-      body: Center(
-        child: ElevatedButton(
-            onPressed: () {
-              service.logout().then((value) {
-                Modular.to.navigate('../auth/');
-              });
-            },
-            child: const Text('logout')),
+      drawer: Drawer(
+        child: Column(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Configurations'),
+              onTap: () {
+                Modular.to.pop();
+                Modular.to.pushNamed('../config');
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Observer(
+        builder: (_) => PageView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: homeStore.pageViewController,
+          children: [
+            FeedModule(),
+            SearchModule(),
+            const Center(
+              child: Text('3'),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Observer(
+        builder: (_) => BottomNavigationBar(
+          currentIndex: homeStore.currentPage,
+          onTap: (index) {
+            homeStore.changeCurrentPage(index);
+          },
+          items: const [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.list_rounded), label: 'Feed'),
+            BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.message_outlined),
+              label: 'Chat',
+            ),
+          ],
+        ),
       ),
     );
   }
