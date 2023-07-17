@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tweet_app/src/core/repositories/user_repository_firestore.dart';
 
 class AuthServiceFirebase {
   final FirebaseAuth firebaseAuth;
+  final UserRepositoryFirestore userRepositoryFirestore;
 
-  AuthServiceFirebase({required this.firebaseAuth});
+  AuthServiceFirebase(
+      {required this.firebaseAuth, required this.userRepositoryFirestore});
 
   Future<String?> loginUser({
     required String email,
@@ -27,10 +30,20 @@ class AuthServiceFirebase {
   Future<String?> registrationUser({
     required String email,
     required String password,
+    required String identifier,
   }) async {
     try {
-      await firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      if (await userRepositoryFirestore.isIdentifierAvailable(
+          identifierValue: identifier)) {
+        UserCredential newUserCredential = await firebaseAuth
+            .createUserWithEmailAndPassword(email: email, password: password);
+        var newUserUid = newUserCredential.user!.uid;
+
+        userRepositoryFirestore.createUser(
+            uidAuth: newUserUid, identifier: identifier);
+      } else {
+        return 'The identifer is not available';
+      }
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'email-already-in-use':
