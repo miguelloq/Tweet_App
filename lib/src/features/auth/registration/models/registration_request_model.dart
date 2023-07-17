@@ -1,25 +1,30 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class RegistrationRequestModel {
   String email;
   String password;
   String confirmPassword;
+  String identifier;
 
   RegistrationRequestModel({
     required this.email,
     required this.password,
     required this.confirmPassword,
+    required this.identifier,
   });
 
   RegistrationRequestModel copyWith({
     String? email,
     String? password,
     String? confirmPassword,
+    String? identifier,
   }) {
     return RegistrationRequestModel(
       email: email ?? this.email,
       password: password ?? this.password,
       confirmPassword: confirmPassword ?? this.confirmPassword,
+      identifier: identifier ?? this.identifier,
     );
   }
 
@@ -28,6 +33,7 @@ class RegistrationRequestModel {
       'email': email,
       'password': password,
       'confirmPassword': confirmPassword,
+      'identifier': identifier,
     };
   }
 
@@ -36,6 +42,7 @@ class RegistrationRequestModel {
       email: map['email'] as String,
       password: map['password'] as String,
       confirmPassword: map['confirmPassword'] as String,
+      identifier: map['identifier'] as String,
     );
   }
 

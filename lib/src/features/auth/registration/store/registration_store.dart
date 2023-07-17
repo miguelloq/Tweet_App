@@ -14,8 +14,8 @@ abstract class _RegistrationStore with Store {
   _RegistrationStore({required this.authService});
 
   @observable
-  RegistrationRequestModel registrationModel =
-      RegistrationRequestModel(email: '', password: '', confirmPassword: '');
+  RegistrationRequestModel registrationModel = RegistrationRequestModel(
+      email: '', password: '', confirmPassword: '', identifier: '');
 
   @observable
   RegistrationState screenState = RegistrationState.idle;
@@ -43,7 +43,8 @@ abstract class _RegistrationStore with Store {
     authService
         .registrationUser(
             email: registrationModel.email,
-            password: registrationModel.password)
+            password: registrationModel.password,
+            identifier: registrationModel.identifier)
         .then(
       (String? error) {
         if (error != null) {

@@ -8,7 +8,8 @@ class ConfigModule extends Module {
   @override
   List<Bind> get binds => [
         Bind.instance<FirebaseAuth>(FirebaseAuth.instance),
-        Bind.factory((i) => AuthServiceFirebase(firebaseAuth: i())),
+        Bind.factory((i) => AuthServiceFirebase(
+            firebaseAuth: i(), userRepositoryFirestore: i())),
       ];
 
   @override

@@ -32,7 +32,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     });
     when((_) => registrationStore.screenState == RegistrationState.success, () {
       registrationStore.setScreenState(newState: RegistrationState.idle);
-      Modular.to.navigate('/');
+      Modular.to.navigate('/auth/');
     });
     super.initState();
   }
@@ -69,6 +69,27 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     registrationStore.changeModel(registrationStore
                         .registrationModel
                         .copyWith(email: value));
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    border: const OutlineInputBorder(),
+                    labelText: 'Identifier(@)',
+                    labelStyle:
+                        TextStyle(color: Theme.of(context).primaryColor),
+                    prefixIcon: const Icon(Icons.alternate_email),
+                  ),
+                  validator: Validatorless.multiple([
+                    Validatorless.required('The field is obrigatory.'),
+                  ]),
+                  onChanged: (value) {
+                    registrationStore.changeModel(registrationStore
+                        .registrationModel
+                        .copyWith(identifier: value));
                   },
                 ),
               ),
