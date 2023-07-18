@@ -79,4 +79,13 @@ class AuthServiceFirebase {
     }
     return null;
   }
+
+  String? getCurrentUserUid() {
+    User? currentUser = firebaseAuth.currentUser;
+    if (currentUser == null) {
+      return null;
+    } else {
+      return currentUser.uid;
+    }
+  }
 }
