@@ -7,7 +7,7 @@ class UserRepositoryFirestore {
   UserRepositoryFirestore({required this.firestoreInstance})
       : referenceUsers = firestoreInstance.collection('users');
 
-  Future<bool> isIdentifierAvailable({required identifierValue}) async {
+  Future<bool> isIdentifierAvailable({required String identifierValue}) async {
     try {
       final QuerySnapshot snapshot = await referenceUsers
           .where("identifier", isEqualTo: '@$identifierValue')
@@ -30,23 +30,22 @@ class UserRepositoryFirestore {
   }
 
   Future<void> createUser(
-      {required String uidAuth, required identifier}) async {
+      {required String uidAuth, required String identifier}) async {
     return referenceUsers.doc(uidAuth).set({
       'uidAuth': uidAuth,
       'identifier': '@$identifier',
       'photo': null,
-      'bannerPhoto': null
+      'bannerPhoto': null,
     });
   }
 
   Future<void> updateUser(
       {required String uidAuth,
-      required fieldName,
+      required String fieldName,
       required newFieldValue}) async {
     if (await isUserExistsInUsers(uidAuth: uidAuth)) {
-      referenceUsers.doc(uidAuth).update({'$fieldName': newFieldValue});
+      referenceUsers.doc(uidAuth).update({fieldName: newFieldValue});
     }
-    throw Exception('Error in update some information of the User');
   }
 
   Future<void> deleteUser({required String uidAuth}) async {
@@ -54,6 +53,6 @@ class UserRepositoryFirestore {
   }
 
   readUser() {
-    //TODO Records and Patterns
+    //TODO readUser, maybe use Records and Patterns
   }
 }
