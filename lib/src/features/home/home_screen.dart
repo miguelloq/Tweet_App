@@ -40,6 +40,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Modular.to.pushNamed('/home/addTweet');
+        },
+        child: const Icon(Icons.add),
+      ),
       body: Observer(
         builder: (_) => PageView(
           physics: const NeverScrollableScrollPhysics(),
