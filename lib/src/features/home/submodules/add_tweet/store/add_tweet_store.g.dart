@@ -41,15 +41,54 @@ mixin _$AddTweetStore on _AddTweetStore, Store {
     });
   }
 
+  late final _$chosenImagesAtom =
+      Atom(name: '_AddTweetStore.chosenImages', context: context);
+
+  @override
+  List<ImageRequestModel> get chosenImages {
+    _$chosenImagesAtom.reportRead();
+    return super.chosenImages;
+  }
+
+  @override
+  set chosenImages(List<ImageRequestModel> value) {
+    _$chosenImagesAtom.reportWrite(value, super.chosenImages, () {
+      super.chosenImages = value;
+    });
+  }
+
   late final _$_AddTweetStoreActionController =
       ActionController(name: '_AddTweetStore', context: context);
 
   @override
-  void setState({required AddTweetState newState}) {
+  void newScreenState({required AddTweetState newState}) {
     final _$actionInfo = _$_AddTweetStoreActionController.startAction(
-        name: '_AddTweetStore.setState');
+        name: '_AddTweetStore.newScreenState');
     try {
-      return super.setState(newState: newState);
+      return super.newScreenState(newState: newState);
+    } finally {
+      _$_AddTweetStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void addImageInChosenImages(
+      {required File file, required String path, required String name}) {
+    final _$actionInfo = _$_AddTweetStoreActionController.startAction(
+        name: '_AddTweetStore.addImageInChosenImages');
+    try {
+      return super.addImageInChosenImages(file: file, path: path, name: name);
+    } finally {
+      _$_AddTweetStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void removeImageInChosenImages({required int position}) {
+    final _$actionInfo = _$_AddTweetStoreActionController.startAction(
+        name: '_AddTweetStore.removeImageInChosenImages');
+    try {
+      return super.removeImageInChosenImages(position: position);
     } finally {
       _$_AddTweetStoreActionController.endAction(_$actionInfo);
     }
@@ -70,7 +109,8 @@ mixin _$AddTweetStore on _AddTweetStore, Store {
   String toString() {
     return '''
 errorText: ${errorText},
-addTweetState: ${addTweetState}
+addTweetState: ${addTweetState},
+chosenImages: ${chosenImages}
     ''';
   }
 }
