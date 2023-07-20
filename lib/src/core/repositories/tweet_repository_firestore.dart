@@ -8,6 +8,7 @@ class TweetRepositoryFirestore {
       : referenceTweets = firestoreInstance.collection('tweets');
 
   Future<void> createTweet({
+    required String docTweetName,
     required String uidAuth,
     required String bodyText,
     required DateTime postCreationTime,
@@ -16,7 +17,7 @@ class TweetRepositoryFirestore {
     return await referenceTweets
         .doc(uidAuth)
         .collection('usersTweet')
-        .doc()
+        .doc(docTweetName)
         .set({
       'uidPoster': uidAuth,
       'text': bodyText,
