@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 class CustomIconButton extends StatelessWidget {
   final VoidCallback buttonFuncion;
   final IconData iconSymbol;
-  const CustomIconButton(
-      {super.key, required this.buttonFuncion, required this.iconSymbol});
+
+  const CustomIconButton({
+    super.key,
+    required this.buttonFuncion,
+    required this.iconSymbol,
+  });
 
   @override
   Widget build(BuildContext context) {

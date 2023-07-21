@@ -5,12 +5,21 @@ class FetchLocalImageService {
 
   FetchLocalImageService({required this.picker});
 
-  Future<XFile?> getFileImagePath() async {
+  Future<(String? fileName, String? filePath)> getFileImageCamera() async {
+    XFile? image = await picker.pickImage(source: ImageSource.camera);
+    if (image != null) {
+      return (image.name, image.path);
+    } else {
+      return (null, null);
+    }
+  }
+
+  Future<(String? fileName, String? filePath)> getFileImageGallery() async {
     XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      return image;
+      return (image.name, image.path);
     } else {
-      return null;
+      return (null, null);
     }
   }
 }

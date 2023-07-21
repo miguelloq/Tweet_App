@@ -5,15 +5,21 @@ import 'package:flutter/material.dart';
 class CustomImageFile extends StatelessWidget {
   final VoidCallback iconButtonFunction;
   final File chosenFile;
+  final double height;
+  final double width;
 
   const CustomImageFile(
-      {super.key, required this.iconButtonFunction, required this.chosenFile});
+      {super.key,
+      required this.iconButtonFunction,
+      required this.chosenFile,
+      required this.height,
+      required this.width});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 125,
-      width: 125,
+      height: height,
+      width: width,
       child: Stack(
         children: [
           ClipRRect(

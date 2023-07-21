@@ -112,16 +112,25 @@ class _AddTweetScreenState extends State<AddTweetScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               CustomIconButton(
-                  buttonFuncion: () {
-                    addTweetStore.pickAndChooseImage();
-                  },
-                  iconSymbol: Icons.image),
+                buttonFuncion: () {
+                  addTweetStore.pickAndChooseImageGallery();
+                },
+                iconSymbol: Icons.image,
+              ),
               CustomIconButton(
-                  buttonFuncion: () {}, iconSymbol: Icons.gif_box_outlined),
+                buttonFuncion: () {
+                  addTweetStore.pickAndChooseImageCamera();
+                },
+                iconSymbol: Icons.camera_alt_outlined,
+              ),
               CustomIconButton(
-                  buttonFuncion: () {}, iconSymbol: Icons.notifications_active),
+                buttonFuncion: () {},
+                iconSymbol: Icons.voice_chat,
+              ),
               CustomIconButton(
-                  buttonFuncion: () {}, iconSymbol: Icons.voice_chat),
+                buttonFuncion: () {},
+                iconSymbol: Icons.notifications_active,
+              ),
             ],
           ),
           const Divider(
@@ -137,13 +146,16 @@ class _AddTweetScreenState extends State<AddTweetScreen> {
                       (data) => Padding(
                         padding: const EdgeInsets.only(top: 5),
                         child: CustomImageFile(
-                            iconButtonFunction: () {
-                              addTweetStore.removeImageInChosenImages(
-                                position:
-                                    addTweetStore.chosenImages.indexOf(data),
-                              );
-                            },
-                            chosenFile: data.file),
+                          height: 125,
+                          width: 125,
+                          chosenFile: data.file,
+                          iconButtonFunction: () {
+                            addTweetStore.removeImageInChosenImages(
+                              position:
+                                  addTweetStore.chosenImages.indexOf(data),
+                            );
+                          },
+                        ),
                       ),
                     )
                     .toList(),

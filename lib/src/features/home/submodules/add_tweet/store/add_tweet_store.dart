@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:tweet_app/src/core/repositories/tweet_repository_firestore.dart';
 import 'package:tweet_app/src/core/services/random_generator_id_service.dart';
@@ -48,11 +47,24 @@ abstract class _AddTweetStore with Store {
     requestModel = requestModel.copyWith(message: newMessage);
   }
 
-  void pickAndChooseImage() {
-    imageService.getFileImagePath().then((XFile? file) {
-      if (file != null) {
+  void pickAndChooseImageGallery() {
+    imageService.getFileImageGallery().then((tuple) {
+      String? fileName = tuple.$1;
+      String? filePath = tuple.$2;
+      if (fileName != null && filePath != null) {
         addImageInChosenImages(
-            file: File(file.path), path: file.path, name: file.name);
+            file: File(filePath), path: filePath, name: fileName);
+      }
+    });
+  }
+
+  void pickAndChooseImageCamera() {
+    imageService.getFileImageCamera().then((tuple) {
+      String? fileName = tuple.$1;
+      String? filePath = tuple.$2;
+      if (fileName != null && filePath != null) {
+        addImageInChosenImages(
+            file: File(filePath), path: filePath, name: fileName);
       }
     });
   }
@@ -74,7 +86,7 @@ abstract class _AddTweetStore with Store {
     for (var image in chosenImages) {
       if (image.isSameName(otherImage: newImage)) {
         newScreenState(newState: AddTweetState.error);
-        errorText = 'This photo is already selected';
+        errorText = 'This photo is already selected.';
         return;
       }
     }
