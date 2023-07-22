@@ -34,8 +34,8 @@ class UserRepositoryFirestore {
     return referenceUsers.doc(uidAuth).set({
       'uidAuth': uidAuth,
       'identifier': '@$identifier',
-      'photo': null,
-      'bannerPhoto': null,
+      'photo': 'profile_icon_default.jpg',
+      'bannerPhoto': 'profile_banner_default.jpg',
     });
   }
 

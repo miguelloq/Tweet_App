@@ -10,6 +10,7 @@ import 'package:tweet_app/src/features/home/home_module.dart';
 import 'package:tweet_app/src/splash_page.dart';
 import 'package:uuid/uuid.dart';
 
+import 'core/repositories/tweet_repository_firestore.dart';
 import 'core/services/auth_service_firebase.dart';
 import 'features/auth/guards/auth_guard.dart';
 
@@ -27,6 +28,9 @@ class AppModule extends Module {
         Bind.singleton((i) => AuthServiceFirebase(
             firebaseAuth: i<FirebaseAuth>(),
             userRepositoryFirestore: i<UserRepositoryFirestore>())),
+        Bind.singleton((i) => TweetRepositoryFirestore(
+              firestoreInstance: i<FirebaseFirestore>(),
+            )),
       ];
 
   @override

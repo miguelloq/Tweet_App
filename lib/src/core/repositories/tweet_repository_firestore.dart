@@ -28,9 +28,15 @@ class TweetRepositoryFirestore {
     });
   }
 
-  Future<void> likeTweet(
-      {required String docNameTweet, required uidAuth}) async {
-    final docReference = referenceTweets.doc(docNameTweet);
+  Future<void> alterLikesValueTweet(
+      {required String docNameTweet,
+      required uidTweetOwner,
+      required uidLikeOwner,
+      required bool isIncrement}) async {
+    final docReference = referenceTweets
+        .doc(uidTweetOwner)
+        .collection('usersTweet')
+        .doc(docNameTweet);
 
     firestoreInstance.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(docReference);
@@ -43,12 +49,27 @@ class TweetRepositoryFirestore {
             List.from(snapshotData['likesUidUsers'] ?? []);
         int currentValue = snapshotData['likesValue'] ?? 0;
 
-        likesUsers.add(uidAuth);
-        currentValue += 1;
+        if (isIncrement) {
+          if (!likesUsers.contains(uidLikeOwner)) {
+            likesUsers.add(uidLikeOwner);
+            currentValue += 1;
+          } else {
+            Exception(
+                'Likeowner tried to like the post, but the like has already been given.');
+          }
+        } else {
+          if (likesUsers.contains(uidLikeOwner) && currentValue > 0) {
+            likesUsers.remove(uidLikeOwner);
+            currentValue -= 1;
+          } else {
+            throw Exception(
+                'LikeOwner tried to unlike the post, but he had not previously liked it.');
+          }
+        }
 
         transaction.update(docReference, {
-          'likesUidUsers': likesUsers,
           'likesValue': currentValue,
+          'likesUidUsers': likesUsers,
         });
       } else {
         Exception('Tweet dont exists');
@@ -62,5 +83,15 @@ class TweetRepositoryFirestore {
         .collection('usersTweet')
         .doc(docNameTweet)
         .delete();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> readTweets(
+      {required String uidAuth}) async {
+    return await firestoreInstance
+        .collection('tweets')
+        .doc(uidAuth)
+        .collection('usersTweet')
+        .orderBy('postCreationTime')
+        .get();
   }
 }
