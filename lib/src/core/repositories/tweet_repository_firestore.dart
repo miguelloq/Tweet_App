@@ -85,13 +85,22 @@ class TweetRepositoryFirestore {
         .delete();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> readTweets(
-      {required String uidAuth}) async {
-    return await firestoreInstance
-        .collection('tweets')
+  Future<QuerySnapshot<Map<String, dynamic>>> readAllTweetsFromUser({
+    required String uidAuth,
+  }) async {
+    return await referenceTweets
         .doc(uidAuth)
         .collection('usersTweet')
         .orderBy('postCreationTime')
+        .get();
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> readTweet(
+      {required String uidAuth, required String docNameTweet}) async {
+    return await referenceTweets
+        .doc(uidAuth)
+        .collection('usersTweet')
+        .doc(docNameTweet)
         .get();
   }
 }

@@ -52,7 +52,7 @@ class UserRepositoryFirestore {
     return await referenceUsers.doc(uidAuth).delete();
   }
 
-  readUser() {
-    //TODO readUser, maybe use Records and Patterns
+  Future<DocumentSnapshot> readUser({required String uidAuth}) async {
+    return await referenceUsers.doc(uidAuth).get();
   }
 }
