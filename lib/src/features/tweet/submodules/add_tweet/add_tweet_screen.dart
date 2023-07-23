@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
-import 'package:tweet_app/src/features/home/submodules/add_tweet/components/custom_icon_button.dart';
-import 'package:tweet_app/src/features/home/submodules/add_tweet/components/custom_image_file.dart';
-import 'package:tweet_app/src/features/home/submodules/add_tweet/store/add_tweet_store.dart';
+import 'package:tweet_app/src/features/tweet/submodules/add_tweet/store/add_tweet_store.dart';
+
+import 'components/custom_icon_button.dart';
+import 'components/custom_image_file.dart';
 
 class AddTweetScreen extends StatefulWidget {
   const AddTweetScreen({super.key});
@@ -32,6 +33,13 @@ class _AddTweetScreenState extends State<AddTweetScreen> {
       }
     });
     when((_) => addTweetStore.addTweetState == AddTweetState.success, () {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(
+          'Success in creating the tweet',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.green,
+      ));
       Modular.to.pop();
     });
   }

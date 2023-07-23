@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:tweet_app/src/core/repositories/tweet_repository_firestore.dart';
+import 'package:tweet_app/src/features/tweet/services/tweet_repository_firestore.dart';
 
 part 'mini_tweet_store.g.dart';
 

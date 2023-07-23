@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:tweet_app/src/features/home/submodules/search/search_screen.dart';
+import 'package:tweet_app/src/features/tweet/submodules/search/search_screen.dart';
 
 class SearchModule extends WidgetModule {
   @override

@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     when((_) => loginStore.screenState == LoginState.success, () {
       loginStore.setScreenState(newState: LoginState.idle);
-      Modular.to.navigate('../home/');
+      Modular.to.navigate('/tweet/');
     });
     super.initState();
   }

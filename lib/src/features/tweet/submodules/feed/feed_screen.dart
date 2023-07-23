@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:tweet_app/src/features/mini_tweet/mini_tweet.dart';
+import 'package:tweet_app/src/features/tweet/ui/components/mini_tweet_widget.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -23,7 +23,7 @@ class _FeedScreenState extends State<FeedScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 12, 16, 6),
-                child: MiniTweet(
+                child: MiniTweetWidget(
                   isAlreadyLiked: false,
                   uidLikeOwner: 'tjxxq0mYmyWChk8b34R4DLSqudT2',
                   uidTweetOwner: 'yth8obRxiRSPS6j6JoQcpQMxz4h2',

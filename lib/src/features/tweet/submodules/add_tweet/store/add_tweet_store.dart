@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:mobx/mobx.dart';
-import 'package:tweet_app/src/core/repositories/tweet_repository_firestore.dart';
-import 'package:tweet_app/src/core/services/random_generator_id_service.dart';
-import 'package:tweet_app/src/features/home/submodules/add_tweet/models/add_tweet_request_model.dart';
-import 'package:tweet_app/src/features/home/submodules/add_tweet/models/image_request_model.dart';
+import 'package:tweet_app/src/features/tweet/services/tweet_repository_firestore.dart';
+import 'package:tweet_app/src/features/tweet/services/random_generator_id_service.dart';
 
-import '../../../../../core/repositories/cloud_storage_repository_firebase.dart';
+import '../../../services/cloud_storage_repository_firebase.dart';
 import '../../../../../core/services/fetch_local_image_service.dart';
+import '../models/add_tweet_request_model.dart';
+import '../models/image_request_model.dart';
 part 'add_tweet_store.g.dart';
 
 enum AddTweetState { success, error, waiting }
@@ -119,8 +119,8 @@ abstract class _AddTweetStore with Store {
               tweetDocName: docNewTweetName,
               imageId: image.fileName,
               path: image.filePath);
-          newScreenState(newState: AddTweetState.success);
         }
+        newScreenState(newState: AddTweetState.success);
       } catch (e) {
         errorText = e.toString();
         newScreenState(newState: AddTweetState.error);

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:tweet_app/src/core/repositories/tweet_repository_firestore.dart';
-import 'package:tweet_app/src/features/mini_tweet/components/custom_carousel_slider.dart';
-import 'package:tweet_app/src/features/mini_tweet/components/profile_picture.dart';
-import 'package:tweet_app/src/features/mini_tweet/store/mini_tweet_store.dart';
+import 'package:tweet_app/src/features/tweet/services/tweet_repository_firestore.dart';
+import 'package:tweet_app/src/features/tweet/ui/components/custom_carousel_slider.dart';
+import 'package:tweet_app/src/features/tweet/ui/components/profile_picture.dart';
+import 'package:tweet_app/src/features/tweet/store/mini_tweet_store.dart';
 
-class MiniTweet extends StatelessWidget {
+class MiniTweetWidget extends StatelessWidget {
   final String uidTweetOwner;
   final String uidLikeOwner;
   final String idTweet;
@@ -19,7 +19,7 @@ class MiniTweet extends StatelessWidget {
   final MiniTweetStore miniTweetStore;
   final bool isAlreadyLiked;
 
-  MiniTweet({
+  MiniTweetWidget({
     super.key,
     required this.identifier,
     required this.text,

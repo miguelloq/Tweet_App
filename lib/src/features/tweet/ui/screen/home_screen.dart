@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:tweet_app/src/features/home/store/home_store.dart';
-import 'package:tweet_app/src/features/home/submodules/feed/feed_module.dart';
-import 'package:tweet_app/src/features/home/submodules/search/search_module.dart';
+import 'package:tweet_app/src/features/tweet/store/home_store.dart';
+import 'package:tweet_app/src/features/tweet/submodules/feed/feed_module.dart';
+import 'package:tweet_app/src/features/tweet/submodules/search/search_module.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Modular.to.pushNamed('/home/addTweet');
+          Modular.to.pushNamed('/tweet/addTweet');
         },
         child: const Icon(Icons.add),
       ),
