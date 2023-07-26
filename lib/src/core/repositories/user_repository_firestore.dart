@@ -4,7 +4,7 @@ import 'package:tweet_app/src/core/repositories/cloud_storage_repository_firebas
 class UserRepositoryFirestore {
   final FirebaseFirestore firestoreInstance;
   final CloudStorageRepositoryFirebase storageRepository;
-  CollectionReference referenceUsers;
+  final CollectionReference referenceUsers;
 
   UserRepositoryFirestore(
       {required this.firestoreInstance, required this.storageRepository})
@@ -35,9 +35,9 @@ class UserRepositoryFirestore {
   Future<void> createUser(
       {required String uidAuth, required String identifier}) async {
     String refInStorageIcon =
-        storageRepository.getStorageLocalRefIcon(uidAuth: uidAuth);
+        storageRepository.getStorageRefIcon(uidAuth: uidAuth);
     String refInStorageBanner =
-        storageRepository.getStorageLocalRefBanner(uidAuth: uidAuth);
+        storageRepository.getStorageRefBanner(uidAuth: uidAuth);
 
     await storageRepository.uploadImageAsset(
       getStorageLocalRef: refInStorageBanner,

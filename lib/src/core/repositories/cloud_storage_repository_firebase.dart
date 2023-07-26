@@ -4,7 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 
 class CloudStorageRepositoryFirebase {
-  FirebaseStorage storageInstance;
+  final FirebaseStorage storageInstance;
 
   CloudStorageRepositoryFirebase({required this.storageInstance});
 
@@ -38,7 +38,7 @@ class CloudStorageRepositoryFirebase {
     }
   }
 
-  String getStorageLocalRefTweet(
+  String getStorageRefTweet(
       {required String uidAuth, required tweetDocName, String? imageId}) {
     if (imageId == null) {
       return 'images/tweets/$uidAuth/$tweetDocName';
@@ -47,11 +47,11 @@ class CloudStorageRepositoryFirebase {
     }
   }
 
-  String getStorageLocalRefIcon({required String uidAuth}) {
+  String getStorageRefIcon({required String uidAuth}) {
     return 'images/profile/$uidAuth/profile_banner_default';
   }
 
-  String getStorageLocalRefBanner({required String uidAuth}) {
+  String getStorageRefBanner({required String uidAuth}) {
     return 'images/profile/$uidAuth/profile_icon_default';
   }
 
@@ -62,7 +62,7 @@ class CloudStorageRepositoryFirebase {
     required String imageFileDevicePath,
   }) async {
     String refLocal =
-        getStorageLocalRefTweet(uidAuth: uidAuth, tweetDocName: tweetDocName);
+        getStorageRefTweet(uidAuth: uidAuth, tweetDocName: tweetDocName);
     return await _uploadImageFileGeneric(
         refLocal: refLocal, imageFileDevicePath: imageFileDevicePath);
   }
@@ -71,14 +71,14 @@ class CloudStorageRepositoryFirebase {
     required String uidAuth,
     required String imageFileDevicePath,
   }) async {
-    String refLocal = getStorageLocalRefBanner(uidAuth: uidAuth);
+    String refLocal = getStorageRefBanner(uidAuth: uidAuth);
     return await _uploadImageFileGeneric(
         refLocal: refLocal, imageFileDevicePath: imageFileDevicePath);
   }
 
   Future<TaskSnapshot> uploadImageFileIconUser(
       {required String uidAuth, required String imageFileDevicePath}) async {
-    String refLocal = getStorageLocalRefIcon(uidAuth: uidAuth);
+    String refLocal = getStorageRefIcon(uidAuth: uidAuth);
     return await _uploadImageFileGeneric(
         refLocal: refLocal, imageFileDevicePath: imageFileDevicePath);
   }
