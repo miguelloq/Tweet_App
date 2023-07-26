@@ -4,8 +4,8 @@ import 'package:tweet_app/src/features/tweet/models/tweet_request_model.dart';
 import 'package:tweet_app/src/features/tweet/services/tweet_repository_firestore.dart';
 
 class GetTweetInformationService {
-  TweetRepositoryFirestore tweetRepository;
-  CloudStorageRepositoryFirebase storageRepository;
+  final TweetRepositoryFirestore tweetRepository;
+  final CloudStorageRepositoryFirebase storageRepository;
 
   GetTweetInformationService(
       {required this.tweetRepository, required this.storageRepository});
@@ -28,14 +28,10 @@ class GetTweetInformationService {
 
     TweetRequestModel tweetRequest = TweetRequestModel.fromMap(tweetMap);
 
-    var listResultAllImagesFromTweet = await storageRepository.storageInstance
-        .ref()
-        .child(storageRepository.getStorageLocalRefTweet(
-            uidAuth: uidAuth, tweetDocName: docName))
-        .listAll();
     List<String> urlImages = [];
-    for (var photo in listResultAllImagesFromTweet.items) {
-      urlImages.add(await photo.getDownloadURL());
+    for (var imagePath in tweetRequest.images) {
+      urlImages
+          .add(await storageRepository.getImageUrl(storagePath: imagePath));
     }
 
     tweetRequest = tweetRequest.copyWith(images: urlImages);
@@ -49,11 +45,32 @@ class GetTweetInformationService {
     List<Map<String, dynamic>> documentList = [];
     for (var doc in queryTweets.docs) {
       if (doc.exists) {
-        documentList.add(doc.data() as Map<String, dynamic>);
+        Map<String, dynamic> documentData = doc.data() as Map<String, dynamic>;
+        documentData['docName'] = doc.id;
+        documentList.add(documentData);
       }
     }
     return documentList;
   }
 
-  //TODO  getAllTweetWithNetworkImage
+  Future<List<TweetRequestModel>> getAllTweetsWithNetworkImage({
+    required String uidAuth,
+  }) async {
+    List<Map<String, dynamic>> listMapAllTweets =
+        await _getAllTweetsAsMapList(uidAuth: uidAuth);
+
+    List<TweetRequestModel> listAllTweets =
+        listMapAllTweets.map((e) => TweetRequestModel.fromMap(e)).toList();
+
+    List<TweetRequestModel> listAllTweetsWithNetworkImage = [];
+    for (var tweet in listAllTweets) {
+      List<String> imagesUrl = [];
+      for (var imagePath in tweet.images) {
+        imagesUrl
+            .add(await storageRepository.getImageUrl(storagePath: imagePath));
+      }
+      listAllTweetsWithNetworkImage.add(tweet.copyWith(images: imagesUrl));
+    }
+    return listAllTweetsWithNetworkImage;
+  }
 }

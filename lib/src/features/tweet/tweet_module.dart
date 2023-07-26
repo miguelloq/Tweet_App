@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tweet_app/src/core/repositories/user_repository_firestore.dart';
 import 'package:tweet_app/src/core/repositories/cloud_storage_repository_firebase.dart';
+import 'package:tweet_app/src/features/tweet/services/get_tweet_information_service.dart';
 import 'package:tweet_app/src/features/tweet/services/get_user_information_service.dart';
 import 'package:tweet_app/src/features/tweet/services/tweet_repository_firestore.dart';
 import 'package:tweet_app/src/features/tweet/store/profile_store.dart';
@@ -19,11 +20,17 @@ class TweetModule extends Module {
               firestoreInstance: i<FirebaseFirestore>(),
             )),
         Bind.singleton((i) => GetUserInformationService(
-            userRepository: i<UserRepositoryFirestore>(),
-            storageRepository: i<CloudStorageRepositoryFirebase>())),
+              userRepository: i<UserRepositoryFirestore>(),
+              storageRepository: i<CloudStorageRepositoryFirebase>(),
+            )),
+        Bind.singleton((i) => GetTweetInformationService(
+              tweetRepository: i<TweetRepositoryFirestore>(),
+              storageRepository: i<CloudStorageRepositoryFirebase>(),
+            )),
         Bind.lazySingleton((i) => HomeStore()),
         Bind.lazySingleton((i) => ProfileStore(
               getUser: i<GetUserInformationService>(),
+              getTweet: i<GetTweetInformationService>(),
             )),
       ];
 

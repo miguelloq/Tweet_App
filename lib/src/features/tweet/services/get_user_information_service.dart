@@ -4,8 +4,8 @@ import 'package:tweet_app/src/core/repositories/user_repository_firestore.dart';
 import 'package:tweet_app/src/features/tweet/models/user_request_model.dart';
 
 class GetUserInformationService {
-  UserRepositoryFirestore userRepository;
-  CloudStorageRepositoryFirebase storageRepository;
+  final UserRepositoryFirestore userRepository;
+  final CloudStorageRepositoryFirebase storageRepository;
   GetUserInformationService(
       {required this.userRepository, required this.storageRepository});
 

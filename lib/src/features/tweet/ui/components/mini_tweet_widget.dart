@@ -46,8 +46,12 @@ class MiniTweetWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ProfilePicture(
+          height: 40,
+          width: 40,
           profileImageUrl: profileImageUrl,
-          buttonFuncion: () {},
+          buttonFuncion: () {
+            Modular.to.pushNamed('/tweet/profile/$uidTweetOwner');
+          },
         ),
         const SizedBox(
           width: 5,

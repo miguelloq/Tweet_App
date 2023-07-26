@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TweetRepositoryFirestore {
   final FirebaseFirestore firestoreInstance;
-  CollectionReference referenceTweets;
+  final CollectionReference referenceTweets;
 
   TweetRepositoryFirestore({required this.firestoreInstance})
       : referenceTweets = firestoreInstance.collection('tweets');

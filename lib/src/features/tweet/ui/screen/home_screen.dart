@@ -50,8 +50,14 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             FeedModule(),
             SearchModule(),
-            const Center(
-              child: Text('3'),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Modular.to
+                      .pushNamed('./profile/PgklNCiMmGcm6DTa0LkNO73sLN12');
+                },
+                child: const Text('Profile'),
+              ),
             ),
           ],
         ),
