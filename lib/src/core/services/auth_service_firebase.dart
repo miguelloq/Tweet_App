@@ -39,7 +39,7 @@ class AuthServiceFirebase {
             .createUserWithEmailAndPassword(email: email, password: password);
         var newUserUid = newUserCredential.user!.uid;
 
-        userRepositoryFirestore.createUser(
+        await userRepositoryFirestore.createUser(
             uidAuth: newUserUid, identifier: identifier);
       } else {
         return 'The identifer is not available';
@@ -52,6 +52,8 @@ class AuthServiceFirebase {
           return 'Your password must have at least 6 characters';
       }
       return e.code;
+    } on Exception catch (e) {
+      return e.toString();
     }
     return null;
   }

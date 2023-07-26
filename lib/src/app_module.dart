@@ -8,6 +8,7 @@ import 'package:tweet_app/src/features/config/config_module.dart';
 import 'package:tweet_app/src/features/tweet/tweet_module.dart';
 import 'package:tweet_app/src/splash_page.dart';
 
+import 'core/repositories/cloud_storage_repository_firebase.dart';
 import 'core/services/auth_service_firebase.dart';
 import 'features/auth/guards/auth_guard.dart';
 
@@ -17,8 +18,12 @@ class AppModule extends Module {
         Bind.instance<FirebaseFirestore>(FirebaseFirestore.instance),
         Bind.instance<FirebaseAuth>(FirebaseAuth.instance),
         Bind.instance<FirebaseStorage>(FirebaseStorage.instance),
+        Bind.singleton((i) => CloudStorageRepositoryFirebase(
+              storageInstance: i<FirebaseStorage>(),
+            )),
         Bind.singleton((i) => UserRepositoryFirestore(
               firestoreInstance: i<FirebaseFirestore>(),
+              storageRepository: i<CloudStorageRepositoryFirebase>(),
             )),
         Bind.singleton((i) => AuthServiceFirebase(
             firebaseAuth: i<FirebaseAuth>(),

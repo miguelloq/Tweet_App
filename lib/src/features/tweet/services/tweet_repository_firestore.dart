@@ -22,7 +22,7 @@ class TweetRepositoryFirestore {
       'uidPoster': uidAuth,
       'text': bodyText,
       'postCreationTime': Timestamp.fromDate(postCreationTime),
-      'images': images,
+      'images': images ?? [],
       'likesValue': 0,
       'likesUidUsers': [],
     });

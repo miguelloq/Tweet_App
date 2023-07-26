@@ -1,10 +1,9 @@
 import 'dart:io';
 
 import 'package:mobx/mobx.dart';
-import 'package:tweet_app/src/features/tweet/services/tweet_repository_firestore.dart';
-import 'package:tweet_app/src/features/tweet/services/random_generator_id_service.dart';
 
-import '../../../services/cloud_storage_repository_firebase.dart';
+import 'package:tweet_app/src/features/tweet/submodules/add_tweet/services/send_tweet_service.dart';
+
 import '../../../../../core/services/fetch_local_image_service.dart';
 import '../models/add_tweet_request_model.dart';
 import '../models/image_request_model.dart';
@@ -15,20 +14,16 @@ enum AddTweetState { success, error, waiting }
 class AddTweetStore = _AddTweetStore with _$AddTweetStore;
 
 abstract class _AddTweetStore with Store {
-  final TweetRepositoryFirestore tweetRepository;
-  final CloudStorageRepositoryFirebase storageRepository;
+  final SendTweetService sendService;
   final FetchLocalImageService imageService;
   final String userUid;
-  final RandomGeneratorIdService generator;
 
   AddTweetRequestModel requestModel;
 
   _AddTweetStore({
-    required this.tweetRepository,
     required this.userUid,
-    required this.storageRepository,
+    required this.sendService,
     required this.imageService,
-    required this.generator,
   }) : requestModel = AddTweetRequestModel(
           userUid: userUid,
           message: '',
@@ -100,31 +95,48 @@ abstract class _AddTweetStore with Store {
 
   @action
   void addTweetAction() {
-    String docNewTweetName = generator.idGeneration();
-
-    tweetRepository
-        .createTweet(
-            docTweetName: docNewTweetName,
-            uidAuth: requestModel.userUid,
+    try {
+      if (chosenImages.isEmpty) {
+        sendService.sendTweet(bodyText: requestModel.message, uidAuth: userUid);
+      } else {
+        sendService.sendTweet(
             bodyText: requestModel.message,
-            postCreationTime: DateTime.now(),
-            images: chosenImages.isEmpty
-                ? null
-                : chosenImages.map((e) => e.fileName).toList())
-        .then((value) {
-      try {
-        for (var image in chosenImages) {
-          storageRepository.uploadImageTweet(
-              uidAuth: userUid,
-              tweetDocName: docNewTweetName,
-              imageId: image.fileName,
-              path: image.filePath);
-        }
-        newScreenState(newState: AddTweetState.success);
-      } catch (e) {
-        errorText = e.toString();
-        newScreenState(newState: AddTweetState.error);
+            uidAuth: userUid,
+            imageList: chosenImages);
       }
-    });
+      newScreenState(newState: AddTweetState.success);
+    } catch (e) {
+      errorText = e.toString();
+      newScreenState(newState: AddTweetState.error);
+    }
   }
 }
+// @action
+//   void addTweetAction() {
+//     String docNewTweetName = generator.idGeneration();
+
+//     tweetRepository
+//         .createTweet(
+//             docTweetName: docNewTweetName,
+//             uidAuth: requestModel.userUid,
+//             bodyText: requestModel.message,
+//             postCreationTime: DateTime.now(),
+//             images: chosenImages.isEmpty
+//                 ? null
+//                 : chosenImages.map((e) => e.fileName).toList())
+//         .then((value) {
+//       try {
+//         for (var image in chosenImages) {
+//           storageRepository.uploadImageFileTweet(
+//               uidAuth: userUid,
+//               tweetDocName: docNewTweetName,
+//               imageId: image.fileName,
+//               imageFileDevicePath: image.filePath);
+//         }
+//         newScreenState(newState: AddTweetState.success);
+//       } catch (e) {
+//         errorText = e.toString();
+//         newScreenState(newState: AddTweetState.error);
+//       }
+//     });
+//   }

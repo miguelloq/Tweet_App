@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tweet_app/src/core/repositories/cloud_storage_repository_firebase.dart';
 
 class UserRepositoryFirestore {
   final FirebaseFirestore firestoreInstance;
+  final CloudStorageRepositoryFirebase storageRepository;
   CollectionReference referenceUsers;
 
-  UserRepositoryFirestore({required this.firestoreInstance})
+  UserRepositoryFirestore(
+      {required this.firestoreInstance, required this.storageRepository})
       : referenceUsers = firestoreInstance.collection('users');
 
   Future<bool> isIdentifierAvailable({required String identifierValue}) async {
@@ -31,11 +34,25 @@ class UserRepositoryFirestore {
 
   Future<void> createUser(
       {required String uidAuth, required String identifier}) async {
+    String refInStorageIcon =
+        storageRepository.getStorageLocalRefIcon(uidAuth: uidAuth);
+    String refInStorageBanner =
+        storageRepository.getStorageLocalRefBanner(uidAuth: uidAuth);
+
+    await storageRepository.uploadImageAsset(
+      getStorageLocalRef: refInStorageBanner,
+      assetLocation: 'assets/profile_banner_default.jpg',
+    );
+    await storageRepository.uploadImageAsset(
+      getStorageLocalRef: refInStorageIcon,
+      assetLocation: 'assets/profile_icon_default.jpg',
+    );
+
     return referenceUsers.doc(uidAuth).set({
       'uidAuth': uidAuth,
       'identifier': '@$identifier',
-      'photo': 'profile_icon_default.jpg',
-      'bannerPhoto': 'profile_banner_default.jpg',
+      'iconPhoto': refInStorageIcon,
+      'bannerPhoto': refInStorageBanner,
     });
   }
 
