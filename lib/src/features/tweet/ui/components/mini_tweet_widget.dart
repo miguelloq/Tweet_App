@@ -48,7 +48,7 @@ class MiniTweetWidget extends StatelessWidget {
         ProfilePicture(
           height: 40,
           width: 40,
-          profileImageUrl: profileImageUrl,
+          profileImage: Image.network(profileImageUrl),
           buttonFuncion: () {
             Modular.to.pushNamed('/tweet/profile/$uidTweetOwner');
           },

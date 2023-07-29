@@ -41,6 +41,72 @@ mixin _$ProfileStore on _ProfileStore, Store {
     });
   }
 
+  late final _$isFollowingAtom =
+      Atom(name: '_ProfileStore.isFollowing', context: context);
+
+  @override
+  bool get isFollowing {
+    _$isFollowingAtom.reportRead();
+    return super.isFollowing;
+  }
+
+  @override
+  set isFollowing(bool value) {
+    _$isFollowingAtom.reportWrite(value, super.isFollowing, () {
+      super.isFollowing = value;
+    });
+  }
+
+  late final _$followingAmountAtom =
+      Atom(name: '_ProfileStore.followingAmount', context: context);
+
+  @override
+  int get followingAmount {
+    _$followingAmountAtom.reportRead();
+    return super.followingAmount;
+  }
+
+  @override
+  set followingAmount(int value) {
+    _$followingAmountAtom.reportWrite(value, super.followingAmount, () {
+      super.followingAmount = value;
+    });
+  }
+
+  late final _$followersAmountAtom =
+      Atom(name: '_ProfileStore.followersAmount', context: context);
+
+  @override
+  int get followersAmount {
+    _$followersAmountAtom.reportRead();
+    return super.followersAmount;
+  }
+
+  @override
+  set followersAmount(int value) {
+    _$followersAmountAtom.reportWrite(value, super.followersAmount, () {
+      super.followersAmount = value;
+    });
+  }
+
+  late final _$_followActionAsyncAction =
+      AsyncAction('_ProfileStore._followAction', context: context);
+
+  @override
+  Future<void> _followAction({required String uidIsFollowing}) {
+    return _$_followActionAsyncAction
+        .run(() => super._followAction(uidIsFollowing: uidIsFollowing));
+  }
+
+  late final _$_removeFollowActionAsyncAction =
+      AsyncAction('_ProfileStore._removeFollowAction', context: context);
+
+  @override
+  Future<void> _removeFollowAction({required String uidIsRemoveFollowing}) {
+    return _$_removeFollowActionAsyncAction.run(() =>
+        super._removeFollowAction(uidIsRemoveFollowing: uidIsRemoveFollowing));
+  }
+
   late final _$_ProfileStoreActionController =
       ActionController(name: '_ProfileStore', context: context);
 
@@ -59,7 +125,10 @@ mixin _$ProfileStore on _ProfileStore, Store {
   String toString() {
     return '''
 profileScreenState: ${profileScreenState},
-errorMessage: ${errorMessage}
+errorMessage: ${errorMessage},
+isFollowing: ${isFollowing},
+followingAmount: ${followingAmount},
+followersAmount: ${followersAmount}
     ''';
   }
 }
