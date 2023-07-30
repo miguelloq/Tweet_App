@@ -42,7 +42,7 @@ abstract class _ProfileStore with Store {
     isFollowing = await followService.isFollowing(
         uidIsFollowing: uidVisitor, uidFollower: profileOwner.uidAuth);
     var (:followersQuantity, :followingQuantity) =
-        await followService.getFollowInformation(uidAuth: profileOwner.uidAuth);
+        await followService.getFollowQuantity(uidAuth: profileOwner.uidAuth);
     followingAmount = followingQuantity;
     followersAmount = followersQuantity;
   }

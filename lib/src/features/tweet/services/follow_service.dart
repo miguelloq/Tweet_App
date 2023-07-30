@@ -69,7 +69,7 @@ class FollowService {
     }
   }
 
-  Future<({int followersQuantity, int followingQuantity})> getFollowInformation(
+  Future<({int followersQuantity, int followingQuantity})> getFollowQuantity(
       {required String uidAuth}) async {
     int followersQuantity =
         (await followRepository.safeReadFollowers(uidAuth: uidAuth)).length;
