@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   Modular.to
-                      .pushNamed('./profile/PgklNCiMmGcm6DTa0LkNO73sLN12');
+                      .pushNamed('./profile/ivPbVnrLH7hWNaYtzJvq435Bi4Z2');
                 },
                 child: const Text('Profile'),
               ),

@@ -12,8 +12,8 @@ class GetTweetInformationService {
 
   Future<Map<String, dynamic>> _getTweetAsMap(
       {required String uidAuth, required docName}) async {
-    DocumentSnapshot tweetSnapshot = await tweetRepository.readTweet(
-        uidAuth: uidAuth, docNameTweet: docName);
+    DocumentSnapshot tweetSnapshot =
+        await tweetRepository.readTweet(docNameTweet: docName);
     if (tweetSnapshot.exists) {
       return tweetSnapshot.data() as Map<String, dynamic>;
     } else {
@@ -55,6 +55,7 @@ class GetTweetInformationService {
 
   Future<List<TweetRequestModel>> getAllTweetsWithNetworkImage({
     required String uidAuth,
+    required bool isSortedByPostCreationTime,
   }) async {
     List<Map<String, dynamic>> listMapAllTweets =
         await _getAllTweetsAsMapList(uidAuth: uidAuth);
@@ -70,6 +71,10 @@ class GetTweetInformationService {
             .add(await storageRepository.getImageUrl(storagePath: imagePath));
       }
       listAllTweetsWithNetworkImage.add(tweet.copyWith(images: imagesUrl));
+    }
+    if (isSortedByPostCreationTime) {
+      listAllTweetsWithNetworkImage
+          .sort((a, b) => b.getTweetDate().compareTo(a.getTweetDate()));
     }
     return listAllTweetsWithNetworkImage;
   }

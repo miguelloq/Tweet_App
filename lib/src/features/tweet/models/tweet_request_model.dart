@@ -30,7 +30,7 @@ class TweetRequestModel {
       'likesValue': likesValue,
       'postCreationTime': postCreationTime.millisecondsSinceEpoch,
       'text': text,
-      'uidPoster': uidPoster,
+      'ownerUid': uidPoster,
     };
   }
 
@@ -43,7 +43,7 @@ class TweetRequestModel {
       postCreationTime: (map['postCreationTime'] as Timestamp)
           .toDate(), // Convert to DateTime
       text: map['text'] as String,
-      uidPoster: map['uidPoster'] as String,
+      uidPoster: map['ownerUid'] as String,
     );
   }
 
@@ -75,5 +75,9 @@ class TweetRequestModel {
   @override
   String toString() {
     return 'TweetRequestModel(docName: $docName, images: $images, likesUidUsers: $likesUidUsers, likesValue: $likesValue, postCreationTime: $postCreationTime, text: $text, uidPoster: $uidPoster)';
+  }
+
+  DateTime getTweetDate() {
+    return postCreationTime;
   }
 }

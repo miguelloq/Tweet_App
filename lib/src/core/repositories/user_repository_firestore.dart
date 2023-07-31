@@ -50,7 +50,7 @@ class UserRepositoryFirestore {
 
     return referenceUsers.doc(uidAuth).set({
       'uidAuth': uidAuth,
-      'identifier': '@$identifier',
+      'identifier': identifier,
       'iconPhoto': refInStorageIcon,
       'bannerPhoto': refInStorageBanner,
     });
@@ -71,5 +71,17 @@ class UserRepositoryFirestore {
 
   Future<DocumentSnapshot> readUser({required String uidAuth}) async {
     return await referenceUsers.doc(uidAuth).get();
+  }
+
+  Future<QuerySnapshot> readUsersBasedOnIdentifier(
+      {required String whereInput}) async {
+    return await referenceUsers
+        .where(
+          'identifier',
+          isGreaterThanOrEqualTo: whereInput,
+          isLessThanOrEqualTo: whereInput + '\uf8ff',
+        )
+        .limit(10)
+        .get();
   }
 }

@@ -26,10 +26,10 @@ class GetFeedService {
       UserRequestModel user =
           await getUser.getUserWithNetworkImage(uidAuth: userUid);
 
-      followingTweets.addAll(
-          (await getTweet.getAllTweetsWithNetworkImage(uidAuth: user.uidAuth))
-              .map((e) => TweetWithUserInformationModel(user: user, tweet: e))
-              .toList());
+      followingTweets.addAll((await getTweet.getAllTweetsWithNetworkImage(
+              uidAuth: user.uidAuth, isSortedByPostCreationTime: false))
+          .map((e) => TweetWithUserInformationModel(user: user, tweet: e))
+          .toList());
     }
     followingTweets
         .sort((a, b) => b.getTweetDate().compareTo(a.getTweetDate()));

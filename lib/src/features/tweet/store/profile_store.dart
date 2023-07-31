@@ -53,8 +53,8 @@ abstract class _ProfileStore with Store {
       profileOwner =
           await getUser.getUserWithNetworkImage(uidAuth: uidProfileOwner);
       await _loadFollowInformation(uidVisitor: uidVisitor);
-      tweetList =
-          await getTweet.getAllTweetsWithNetworkImage(uidAuth: uidProfileOwner);
+      tweetList = await getTweet.getAllTweetsWithNetworkImage(
+          uidAuth: uidProfileOwner, isSortedByPostCreationTime: true);
       setScreenState(newState: ProfileScreenState.loaded);
     } on Exception catch (e) {
       errorMessage = e.toString();

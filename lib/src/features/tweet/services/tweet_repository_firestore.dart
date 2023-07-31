@@ -14,17 +14,14 @@ class TweetRepositoryFirestore {
     required DateTime postCreationTime,
     List<String>? images,
   }) async {
-    return await referenceTweets
-        .doc(uidAuth)
-        .collection('usersTweet')
-        .doc(docTweetName)
-        .set({
-      'uidPoster': uidAuth,
+    return await referenceTweets.doc(docTweetName).set({
+      'ownerUid': uidAuth,
       'text': bodyText,
       'postCreationTime': Timestamp.fromDate(postCreationTime),
       'images': images ?? [],
       'likesValue': 0,
       'likesUidUsers': [],
+      'commentaryDocNames': [],
     });
   }
 
@@ -33,10 +30,7 @@ class TweetRepositoryFirestore {
       required uidTweetOwner,
       required uidLikeOwner,
       required bool isIncrement}) async {
-    final docReference = referenceTweets
-        .doc(uidTweetOwner)
-        .collection('usersTweet')
-        .doc(docNameTweet);
+    final docReference = referenceTweets.doc(docNameTweet);
 
     firestoreInstance.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(docReference);
@@ -85,22 +79,13 @@ class TweetRepositoryFirestore {
         .delete();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> readAllTweetsFromUser({
+  Future<QuerySnapshot> readAllTweetsFromUser({
     required String uidAuth,
   }) async {
-    return await referenceTweets
-        .doc(uidAuth)
-        .collection('usersTweet')
-        .orderBy('postCreationTime')
-        .get();
+    return await referenceTweets.where('ownerUid', isEqualTo: uidAuth).get();
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> readTweet(
-      {required String uidAuth, required String docNameTweet}) async {
-    return await referenceTweets
-        .doc(uidAuth)
-        .collection('usersTweet')
-        .doc(docNameTweet)
-        .get();
+  Future<DocumentSnapshot> readTweet({required String docNameTweet}) async {
+    return await referenceTweets.doc(docNameTweet).get();
   }
 }

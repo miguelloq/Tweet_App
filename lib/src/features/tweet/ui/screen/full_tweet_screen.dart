@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class TweetScreen extends StatefulWidget {
-  const TweetScreen({super.key});
+class FullTweetScreen extends StatefulWidget {
+  const FullTweetScreen({super.key});
 
   @override
-  State<TweetScreen> createState() => _TweetScreenState();
+  State<FullTweetScreen> createState() => _TweetScreenState();
 }
 
-class _TweetScreenState extends State<TweetScreen> {
+class _TweetScreenState extends State<FullTweetScreen> {
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
