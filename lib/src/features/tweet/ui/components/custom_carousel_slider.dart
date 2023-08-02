@@ -2,18 +2,20 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class CustomCarouselSlider extends StatelessWidget {
-  final List<String>? imageNetworkUrl;
-  const CustomCarouselSlider({super.key, required this.imageNetworkUrl});
+  final List<String> imageNetworkUrl;
+  final double imageHeight;
+  const CustomCarouselSlider(
+      {super.key, required this.imageNetworkUrl, required this.imageHeight});
 
   @override
   Widget build(BuildContext context) {
     return CarouselSlider.builder(
-      itemCount: imageNetworkUrl!.length,
+      itemCount: imageNetworkUrl.length,
       itemBuilder: (BuildContext context, int index, _) {
         return ClipRRect(
           borderRadius: BorderRadius.circular(8.0),
           child: Image.network(
-            imageNetworkUrl![index],
+            imageNetworkUrl[index],
             loadingBuilder: (context, child, loadingProgress) {
               if (loadingProgress == null) {
                 return child;
@@ -31,7 +33,7 @@ class CustomCarouselSlider extends StatelessWidget {
         );
       },
       options: CarouselOptions(
-        height: 350,
+        height: imageHeight,
         viewportFraction:
             1, // Defina o tamanho das imagens em relação ao carrossel
       ),

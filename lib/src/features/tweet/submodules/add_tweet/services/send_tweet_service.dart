@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:tweet_app/src/core/repositories/cloud_storage_repository_firebase.dart';
 import 'package:tweet_app/src/features/tweet/services/tweet_repository_firestore.dart';
@@ -8,6 +9,7 @@ class SendTweetService {
   final TweetRepositoryFirestore tweetRepository;
   final CloudStorageRepositoryFirebase storageRepository;
   final RandomGeneratorIdService generator;
+
   SendTweetService(
       {required this.tweetRepository,
       required this.storageRepository,
@@ -29,12 +31,13 @@ class SendTweetService {
     return imageFullPaths;
   }
 
-  Future<void> sendTweet({
+  Future<void> _createTweetAndSendImages({
     required String uidAuth,
     required String bodyText,
+    required String docTweetName,
     List<ImageRequestModel>? imageList,
   }) async {
-    String docNewTweetName = generator.idGeneration();
+    String docNewTweetName = docTweetName;
     List<String> imageFullPaths = [];
     if (imageList != null) {
       imageFullPaths = await _sendImagesTweet(
@@ -49,5 +52,61 @@ class SendTweetService {
       postCreationTime: DateTime.now(),
       images: imageFullPaths,
     );
+  }
+
+  Future<void> sendTweet({
+    required String uidAuth,
+    required String bodyText,
+    List<ImageRequestModel>? imageList,
+  }) async {
+    String docTweetName = generator.idGeneration();
+    if (imageList == null) {
+      await _createTweetAndSendImages(
+          uidAuth: uidAuth, bodyText: bodyText, docTweetName: docTweetName);
+    } else {
+      await _createTweetAndSendImages(
+          uidAuth: uidAuth,
+          bodyText: bodyText,
+          docTweetName: docTweetName,
+          imageList: imageList);
+    }
+  }
+
+  Future<void> sendTweetComment({
+    required String uidAuth,
+    required String bodyText,
+    List<ImageRequestModel>? imageList,
+    required String commentedTweetDocName,
+  }) async {
+    String docTweetName = generator.idGeneration();
+
+    DocumentSnapshot commentedDoc =
+        await tweetRepository.readTweet(docNameTweet: commentedTweetDocName);
+
+    if (commentedDoc.exists) {
+      if (imageList == null) {
+        await _createTweetAndSendImages(
+            uidAuth: uidAuth, bodyText: bodyText, docTweetName: docTweetName);
+      } else {
+        await _createTweetAndSendImages(
+            uidAuth: uidAuth,
+            bodyText: bodyText,
+            docTweetName: docTweetName,
+            imageList: imageList);
+      }
+
+      Map<String, dynamic> commentedMap =
+          commentedDoc.data() as Map<String, dynamic>;
+      List<String> commentDocNames =
+          List<String>.from(commentedMap['commentDocNames'] as List<dynamic>);
+      commentDocNames.add(docTweetName);
+
+      tweetRepository.updateTweet(
+          tweetDocName: commentedTweetDocName,
+          field: 'commentDocNames',
+          newValue: commentDocNames);
+    } else {
+      Exception('The tweet that will receive a comment does not exist.');
+    }
   }
 }

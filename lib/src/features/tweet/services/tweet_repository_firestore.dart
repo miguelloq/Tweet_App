@@ -21,7 +21,7 @@ class TweetRepositoryFirestore {
       'images': images ?? [],
       'likesValue': 0,
       'likesUidUsers': [],
-      'commentaryDocNames': [],
+      'commentDocNames': [],
     });
   }
 
@@ -87,5 +87,20 @@ class TweetRepositoryFirestore {
 
   Future<DocumentSnapshot> readTweet({required String docNameTweet}) async {
     return await referenceTweets.doc(docNameTweet).get();
+  }
+
+  Future<QuerySnapshot> readTweetsBasedOnId(
+      {required List<String> tweetIds}) async {
+    return await referenceTweets
+        .where(FieldPath.documentId, whereIn: tweetIds)
+        .get();
+  }
+
+  Future<void> updateTweet({
+    required String tweetDocName,
+    required String field,
+    required dynamic newValue,
+  }) async {
+    referenceTweets.doc(tweetDocName).update({field: newValue});
   }
 }

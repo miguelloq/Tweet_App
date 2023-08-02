@@ -78,7 +78,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         userUidListWhoLiked:
                                             currentTweet.likesUidUsers,
                                         uidAuth: widget.uidVisitor),
-                                commentsQuantity: 0,
+                                commentsQuantity:
+                                    currentTweet.commentDocNames.length,
                                 likesQuantity: currentTweet.likesValue,
                                 profileImageUrl: profileOwner.iconPhoto,
                                 idTweet: currentTweet.docName,

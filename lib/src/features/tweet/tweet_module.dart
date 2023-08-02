@@ -7,7 +7,9 @@ import 'package:tweet_app/src/features/tweet/services/follow_service.dart';
 import 'package:tweet_app/src/features/tweet/services/get_tweet_information_service.dart';
 import 'package:tweet_app/src/features/tweet/services/get_user_information_service.dart';
 import 'package:tweet_app/src/features/tweet/services/tweet_repository_firestore.dart';
+import 'package:tweet_app/src/features/tweet/store/full_tweet_store.dart';
 import 'package:tweet_app/src/features/tweet/store/profile_store.dart';
+import 'package:tweet_app/src/features/tweet/ui/screen/full_tweet_screen.dart';
 import 'package:tweet_app/src/features/tweet/ui/screen/home_screen.dart';
 import 'package:tweet_app/src/features/tweet/store/home_store.dart';
 import 'package:tweet_app/src/features/tweet/submodules/add_tweet/add_tweet_module.dart';
@@ -39,6 +41,10 @@ class TweetModule extends Module {
               getUser: i<GetUserInformationService>(),
               getTweet: i<GetTweetInformationService>(),
             )),
+        Bind.factory((i) => FullTweetStore(
+              getUser: i<GetUserInformationService>(),
+              getTweet: i<GetTweetInformationService>(),
+            ))
       ];
 
   @override
@@ -55,6 +61,13 @@ class TweetModule extends Module {
               uidOwnerProfile: args.params['idOwner'],
               uidVisitor:
                   Modular.get<AuthServiceFirebase>().getCurrentUserUid()!),
-        )
+        ),
+        ChildRoute(
+          '/fullTweet/:idTweet',
+          child: (context, args) => FullTweetScreen(
+              docNameTweet: args.params['idTweet'],
+              uidVisitor:
+                  Modular.get<AuthServiceFirebase>().getCurrentUserUid()!),
+        ),
       ];
 }

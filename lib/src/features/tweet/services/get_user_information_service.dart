@@ -19,19 +19,26 @@ class GetUserInformationService {
     }
   }
 
-  Future<UserRequestModel> getUserWithNetworkImage(
-      {required String uidAuth}) async {
+  Future<UserRequestModel> getUserWithNetworkImage({
+    required String uidAuth,
+    bool isOnlyProfilePicture = false,
+  }) async {
     Map<String, dynamic> userMap = await _getUserAsMap(uidAuth: uidAuth);
 
     UserRequestModel userRequest = UserRequestModel.fromMap(userMap);
 
-    String bannerPhotoUrl = await storageRepository.getImageUrl(
-        storagePath: userRequest.bannerPhoto);
     String iconPhotoUrl =
         await storageRepository.getImageUrl(storagePath: userRequest.iconPhoto);
 
-    userRequest = userRequest.copyWith(
-        iconPhoto: iconPhotoUrl, bannerPhoto: bannerPhotoUrl);
+    if (!isOnlyProfilePicture) {
+      String bannerPhotoUrl = await storageRepository.getImageUrl(
+          storagePath: userRequest.bannerPhoto);
+
+      userRequest = userRequest.copyWith(
+          iconPhoto: iconPhotoUrl, bannerPhoto: bannerPhotoUrl);
+    } else {
+      userRequest = userRequest.copyWith(iconPhoto: iconPhotoUrl);
+    }
     return userRequest;
   }
 }

@@ -14,7 +14,7 @@ class MiniTweetWidget extends StatelessWidget {
   final String text;
   final int commentsQuantity;
   final int likesQuantity;
-  final List<String>? imagesUrls;
+  final List<String> imagesUrls;
   final String profileImageUrl;
   final MiniTweetStore miniTweetStore;
   final bool isAlreadyLiked;
@@ -27,7 +27,7 @@ class MiniTweetWidget extends StatelessWidget {
     required this.commentsQuantity,
     required this.likesQuantity,
     required this.profileImageUrl,
-    this.imagesUrls,
+    required this.imagesUrls,
     required this.idTweet,
     required this.uidLikeOwner,
     required this.uidTweetOwner,
@@ -49,7 +49,7 @@ class MiniTweetWidget extends StatelessWidget {
           height: 40,
           width: 40,
           profileImage: Image.network(profileImageUrl),
-          buttonFuncion: () {
+          imageOnTap: () {
             Modular.to.pushNamed('/tweet/profile/$uidTweetOwner');
           },
         ),
@@ -73,8 +73,11 @@ class MiniTweetWidget extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              if (imagesUrls != null && imagesUrls!.isNotEmpty)
-                CustomCarouselSlider(imageNetworkUrl: imagesUrls),
+              if (imagesUrls.isNotEmpty)
+                CustomCarouselSlider(
+                  imageNetworkUrl: imagesUrls,
+                  imageHeight: 300,
+                ),
               const SizedBox(
                 width: 10,
               ),
@@ -83,7 +86,7 @@ class MiniTweetWidget extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Modular.to.pushNamed('/tweet');
+                      Modular.to.pushNamed('/tweet/fullTweet/$idTweet');
                     },
                     child: Row(
                       children: [
@@ -112,7 +115,7 @@ class MiniTweetWidget extends StatelessWidget {
                   ),
                   IconButton(
                       onPressed: () {
-                        Modular.to.pushNamed('/tweet');
+                        Modular.to.pushNamed('/tweet/fullTweet/$idTweet');
                       },
                       icon: const Icon(Icons.expand_less)),
                 ],

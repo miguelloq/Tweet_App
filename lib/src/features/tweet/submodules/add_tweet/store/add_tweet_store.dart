@@ -94,15 +94,31 @@ abstract class _AddTweetStore with Store {
   }
 
   @action
-  void addTweetAction() {
+  void addTweetAction({String? commentedTweetDocName}) {
     try {
-      if (chosenImages.isEmpty) {
-        sendService.sendTweet(bodyText: requestModel.message, uidAuth: userUid);
+      if (commentedTweetDocName == null) {
+        if (chosenImages.isEmpty) {
+          sendService.sendTweet(
+              bodyText: requestModel.message, uidAuth: userUid);
+        } else {
+          sendService.sendTweet(
+              bodyText: requestModel.message,
+              uidAuth: userUid,
+              imageList: chosenImages);
+        }
       } else {
-        sendService.sendTweet(
-            bodyText: requestModel.message,
-            uidAuth: userUid,
-            imageList: chosenImages);
+        if (chosenImages.isEmpty) {
+          sendService.sendTweetComment(
+              bodyText: requestModel.message,
+              uidAuth: userUid,
+              commentedTweetDocName: commentedTweetDocName);
+        } else {
+          sendService.sendTweetComment(
+              bodyText: requestModel.message,
+              uidAuth: userUid,
+              imageList: chosenImages,
+              commentedTweetDocName: commentedTweetDocName);
+        }
       }
       newScreenState(newState: AddTweetState.success);
     } catch (e) {
@@ -111,32 +127,3 @@ abstract class _AddTweetStore with Store {
     }
   }
 }
-// @action
-//   void addTweetAction() {
-//     String docNewTweetName = generator.idGeneration();
-
-//     tweetRepository
-//         .createTweet(
-//             docTweetName: docNewTweetName,
-//             uidAuth: requestModel.userUid,
-//             bodyText: requestModel.message,
-//             postCreationTime: DateTime.now(),
-//             images: chosenImages.isEmpty
-//                 ? null
-//                 : chosenImages.map((e) => e.fileName).toList())
-//         .then((value) {
-//       try {
-//         for (var image in chosenImages) {
-//           storageRepository.uploadImageFileTweet(
-//               uidAuth: userUid,
-//               tweetDocName: docNewTweetName,
-//               imageId: image.fileName,
-//               imageFileDevicePath: image.filePath);
-//         }
-//         newScreenState(newState: AddTweetState.success);
-//       } catch (e) {
-//         errorText = e.toString();
-//         newScreenState(newState: AddTweetState.error);
-//       }
-//     });
-//   }

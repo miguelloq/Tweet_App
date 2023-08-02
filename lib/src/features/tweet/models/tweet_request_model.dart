@@ -11,6 +11,7 @@ class TweetRequestModel {
   final DateTime postCreationTime;
   final String text;
   final String uidPoster;
+  final List<String> commentDocNames;
 
   TweetRequestModel({
     required this.docName,
@@ -20,6 +21,7 @@ class TweetRequestModel {
     required this.postCreationTime,
     required this.text,
     required this.uidPoster,
+    required this.commentDocNames,
   });
 
   Map<String, dynamic> toMap() {
@@ -44,6 +46,8 @@ class TweetRequestModel {
           .toDate(), // Convert to DateTime
       text: map['text'] as String,
       uidPoster: map['ownerUid'] as String,
+      commentDocNames:
+          List<String>.from(map['commentDocNames'] as List<dynamic>),
     );
   }
 
@@ -60,6 +64,7 @@ class TweetRequestModel {
     DateTime? postCreationTime,
     String? text,
     String? uidPoster,
+    List<String>? commentDocNames,
   }) {
     return TweetRequestModel(
       docName: docName ?? this.docName,
@@ -69,6 +74,7 @@ class TweetRequestModel {
       postCreationTime: postCreationTime ?? this.postCreationTime,
       text: text ?? this.text,
       uidPoster: uidPoster ?? this.uidPoster,
+      commentDocNames: commentDocNames ?? this.commentDocNames,
     );
   }
 

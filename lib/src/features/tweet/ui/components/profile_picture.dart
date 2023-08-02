@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 class ProfilePicture extends StatelessWidget {
-  final VoidCallback buttonFuncion;
+  final VoidCallback imageOnTap;
   final double height;
   final double width;
   final Image profileImage;
   const ProfilePicture(
       {super.key,
       required this.profileImage,
-      required this.buttonFuncion,
+      required this.imageOnTap,
       required this.height,
       required this.width});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: buttonFuncion,
+      onTap: imageOnTap,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
         child: SizedBox(

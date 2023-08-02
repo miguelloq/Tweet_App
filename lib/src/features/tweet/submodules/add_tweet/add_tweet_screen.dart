@@ -8,7 +8,8 @@ import 'components/custom_icon_button.dart';
 import 'components/custom_image_file.dart';
 
 class AddTweetScreen extends StatefulWidget {
-  const AddTweetScreen({super.key});
+  final String? commentedtweetDocName;
+  const AddTweetScreen({super.key, this.commentedtweetDocName});
 
   @override
   State<AddTweetScreen> createState() => _AddTweetScreenState();
@@ -63,11 +64,15 @@ class _AddTweetScreenState extends State<AddTweetScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: FloatingActionButton.extended(
-                elevation: 0,
-                onPressed: () {
-                  addTweetStore.addTweetAction();
-                },
-                label: const Text('New tweet')),
+              elevation: 0,
+              onPressed: () {
+                addTweetStore.addTweetAction(
+                    commentedTweetDocName: widget.commentedtweetDocName);
+              },
+              label: widget.commentedtweetDocName == null
+                  ? const Text('New tweet')
+                  : const Text('New comment'),
+            ),
           )
         ],
       ),

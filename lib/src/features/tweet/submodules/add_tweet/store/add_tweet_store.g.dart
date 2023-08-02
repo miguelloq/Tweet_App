@@ -95,11 +95,11 @@ mixin _$AddTweetStore on _AddTweetStore, Store {
   }
 
   @override
-  void addTweetAction() {
+  void addTweetAction({String? commentedTweetDocName}) {
     final _$actionInfo = _$_AddTweetStoreActionController.startAction(
         name: '_AddTweetStore.addTweetAction');
     try {
-      return super.addTweetAction();
+      return super.addTweetAction(commentedTweetDocName: commentedTweetDocName);
     } finally {
       _$_AddTweetStoreActionController.endAction(_$actionInfo);
     }

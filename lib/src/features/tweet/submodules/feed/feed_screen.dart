@@ -82,15 +82,14 @@ class _FeedScreenState extends State<FeedScreen> {
                                   userUidListWhoLiked:
                                       currentTweet.tweet.likesUidUsers,
                                   uidAuth: widget.feedOwnerUid),
-                          commentsQuantity: 0,
+                          commentsQuantity:
+                              currentTweet.tweet.commentDocNames.length,
                           likesQuantity: currentTweet.tweet.likesValue,
                           profileImageUrl: currentTweet.user.iconPhoto,
                           idTweet: currentTweet.tweet.docName,
                           uidLikeOwner: widget.feedOwnerUid,
                           uidTweetOwner: currentTweet.user.uidAuth,
-                          imagesUrls: currentTweet.tweet.images.isEmpty
-                              ? []
-                              : currentTweet.tweet.images,
+                          imagesUrls: currentTweet.tweet.images,
                         ),
                       ),
                     ],
