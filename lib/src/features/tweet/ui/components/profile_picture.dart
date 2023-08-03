@@ -14,15 +14,13 @@ class ProfilePicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
+      borderRadius: BorderRadius.circular(20),
       onTap: imageOnTap,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: SizedBox(
-          height: height,
-          width: width,
-          child: profileImage,
-        ),
+      child: Ink.image(
+        height: height,
+        width: width,
+        image: profileImage.image,
       ),
     );
   }

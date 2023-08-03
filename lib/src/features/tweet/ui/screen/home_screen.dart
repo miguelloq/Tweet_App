@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Modular.to.pushNamed('/tweet/addTweet');
+          Modular.to.pushNamed('/tweet/addTweet/');
         },
         child: const Icon(Icons.add),
       ),

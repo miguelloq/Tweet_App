@@ -32,36 +32,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile Screen'),
+        centerTitle: true,
+        title: const Text('Profile', style: TextStyle(color: Colors.black)),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Modular.to.pop();
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+        ),
       ),
-      body: Observer(
-        builder: (_) {
-          switch (profileStore.profileScreenState) {
-            case ProfileScreenState.error:
-              return Center(
-                child: Text(profileStore.errorMessage!),
-              );
-            case ProfileScreenState.loading:
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            case ProfileScreenState.loaded:
-              UserRequestModel profileOwner = profileStore.profileOwner;
-              return Column(
-                children: [
-                  Observer(
-                    builder: (_) => ProfileBanner(
+      body: RefreshIndicator(
+        onRefresh: () => profileStore.loadInformation(
+            uidProfileOwner: widget.uidOwnerProfile,
+            uidVisitor: widget.uidVisitor),
+        child: Observer(
+          builder: (_) {
+            switch (profileStore.profileScreenState) {
+              case ProfileScreenState.error:
+                return Center(
+                  child: Text(profileStore.errorMessage!),
+                );
+              case ProfileScreenState.loading:
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              case ProfileScreenState.loaded:
+                UserRequestModel profileOwner = profileStore.profileOwner;
+                return CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: ProfileBanner(
                         imageBanner: Image.network(profileOwner.bannerPhoto),
                         imageAvatar: Image.network(profileOwner.iconPhoto),
                         identifier: profileOwner.identifier,
-                        followingQuantity: 0,
-                        followersQuantity: 0,
+                        followingQuantity: profileStore.followingAmount,
+                        followersQuantity: profileStore.followersAmount,
                         isFollowing: profileStore.isFollowing,
                         followButtonFunction: () => profileStore
-                            .buttonFollowAction(uid: widget.uidVisitor)),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
+                            .buttonFollowAction(uid: widget.uidVisitor),
+                      ),
+                    ),
+                    SliverList.builder(
                       itemCount: profileStore.tweetList.length,
                       itemBuilder: (context, index) {
                         TweetRequestModel currentTweet =
@@ -95,11 +111,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         );
                       },
                     ),
-                  ),
-                ],
-              );
-          }
-        },
+                  ],
+                );
+            }
+          },
+        ),
       ),
     );
   }

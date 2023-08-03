@@ -67,7 +67,7 @@ class _TweetScreenState extends State<FullTweetScreen> {
                     : 'Error:$tweetStore.errorMessage!'),
               ),
             (FullTweetScreenState.loading) => const Center(
-                child: CircularProgressIndicator(),
+                child: Text('Waiting...'),
               ),
             (FullTweetScreenState.loaded) => CustomScrollView(
                 slivers: [
@@ -80,14 +80,15 @@ class _TweetScreenState extends State<FullTweetScreen> {
                           Row(
                             children: [
                               ProfilePicture(
-                                  profileImage: Image.network(
-                                      tweetStore.ownerUser.iconPhoto),
-                                  imageOnTap: () {
-                                    Modular.to.navigate(
-                                        '/tweet/profile/${tweetStore.ownerUser.uidAuth}');
-                                  },
-                                  height: 50,
-                                  width: 50),
+                                profileImage: Image.network(
+                                    tweetStore.ownerUser.iconPhoto),
+                                imageOnTap: () {
+                                  Modular.to.navigate(
+                                      '/tweet/profile/${tweetStore.ownerUser.uidAuth}');
+                                },
+                                height: 50,
+                                width: 50,
+                              ),
                               Text(
                                 tweetStore.ownerUser.identifier,
                                 style: const TextStyle(

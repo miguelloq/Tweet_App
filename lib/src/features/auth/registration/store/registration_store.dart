@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:tweet_app/src/features/auth/registration/models/registration_request_model.dart';
-import 'package:tweet_app/src/core/services/auth_service_firebase.dart';
+import 'package:tweet_app/src/features/auth/services/auth_service_firebase.dart';
 
 part 'registration_store.g.dart';
 

@@ -1,5 +1,5 @@
 import 'package:mobx/mobx.dart';
-import 'package:tweet_app/src/core/services/auth_service_firebase.dart';
+import 'package:tweet_app/src/features/auth/services/auth_service_firebase.dart';
 import '../models/login_request_model.dart';
 
 part 'login_store.g.dart';

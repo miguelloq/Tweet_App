@@ -72,22 +72,4 @@ class AuthServiceFirebase {
     }
     return null;
   }
-
-  Future<String?> logoutUser() async {
-    try {
-      await firebaseAuth.signOut();
-    } on FirebaseAuthException catch (e) {
-      return e.code;
-    }
-    return null;
-  }
-
-  String? getCurrentUserUid() {
-    User? currentUser = firebaseAuth.currentUser;
-    if (currentUser == null) {
-      return null;
-    } else {
-      return currentUser.uid;
-    }
-  }
 }

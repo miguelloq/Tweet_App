@@ -15,12 +15,14 @@ abstract class _ProfileStore with Store {
   final GetUserInformationService getUser;
   final GetTweetInformationService getTweet;
   final FollowService followService;
-  _ProfileStore(
-      {required this.followService,
-      required this.getUser,
-      required this.getTweet});
 
-  late final UserRequestModel profileOwner;
+  _ProfileStore({
+    required this.followService,
+    required this.getUser,
+    required this.getTweet,
+  });
+
+  late UserRequestModel profileOwner;
   List<TweetRequestModel> tweetList = [];
 
   @observable
@@ -39,8 +41,10 @@ abstract class _ProfileStore with Store {
   int followersAmount = 0;
 
   Future<void> _loadFollowInformation({required String uidVisitor}) async {
-    isFollowing = await followService.isFollowing(
-        uidIsFollowing: uidVisitor, uidFollower: profileOwner.uidAuth);
+    isFollowing = profileOwner.uidAuth != uidVisitor
+        ? await followService.isFollowing(
+            uidIsFollowing: uidVisitor, uidFollower: profileOwner.uidAuth)
+        : true;
     var (:followersQuantity, :followingQuantity) =
         await followService.getFollowQuantity(uidAuth: profileOwner.uidAuth);
     followingAmount = followingQuantity;
@@ -63,10 +67,12 @@ abstract class _ProfileStore with Store {
   }
 
   Future<void> buttonFollowAction({required String uid}) async {
-    if (isFollowing) {
-      await _removeFollowAction(uidIsRemoveFollowing: uid);
-    } else {
-      await _followAction(uidIsFollowing: uid);
+    if (uid != profileOwner.uidAuth) {
+      if (isFollowing) {
+        await _removeFollowAction(uidIsRemoveFollowing: uid);
+      } else {
+        await _followAction(uidIsFollowing: uid);
+      }
     }
   }
 
@@ -76,6 +82,7 @@ abstract class _ProfileStore with Store {
       await followService.followUser(
           uidIsFollowing: uidIsFollowing, uidFollower: profileOwner.uidAuth);
       isFollowing = true;
+      followersAmount++;
     } catch (e) {
       errorMessage = e.toString();
       setScreenState(newState: ProfileScreenState.error);
@@ -90,6 +97,7 @@ abstract class _ProfileStore with Store {
           uidIsRemoveFollow: uidIsRemoveFollowing,
           uidFollower: profileOwner.uidAuth);
       isFollowing = false;
+      followersAmount--;
     } catch (e) {
       errorMessage = e.toString();
       setScreenState(newState: ProfileScreenState.error);

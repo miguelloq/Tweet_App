@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:tweet_app/src/core/services/auth_service_firebase.dart';
+import 'package:tweet_app/src/core/services/device_current_user_information.dart';
 import 'package:tweet_app/src/features/tweet/services/follow_repository_firestore.dart';
 import 'package:tweet_app/src/features/tweet/services/get_tweet_information_service.dart';
 import 'package:tweet_app/src/features/tweet/services/get_user_information_service.dart';
@@ -24,5 +24,6 @@ class FeedModule extends WidgetModule {
 
   @override
   Widget get view => FeedScreen(
-      feedOwnerUid: Modular.get<AuthServiceFirebase>().getCurrentUserUid()!);
+      feedOwnerUid:
+          Modular.get<DeviceCurrentUserInformation>().getCurrentUserUid()!);
 }
