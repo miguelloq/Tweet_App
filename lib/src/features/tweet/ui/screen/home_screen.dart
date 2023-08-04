@@ -4,6 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tweet_app/src/features/tweet/store/home_store.dart';
 import 'package:tweet_app/src/features/tweet/submodules/feed/feed_module.dart';
 import 'package:tweet_app/src/features/tweet/submodules/search/search_module.dart';
+import 'package:tweet_app/src/features/tweet/ui/components/custom_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,20 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: Column(
-          children: [
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Configurations'),
-              onTap: () {
-                Modular.to.pop();
-                Modular.to.pushNamed('../config');
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: CustomDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Modular.to.pushNamed('/tweet/addTweet/');

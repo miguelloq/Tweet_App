@@ -21,6 +21,11 @@ class UserRequestModel {
     };
   }
 
+  factory UserRequestModel.empty() {
+    return UserRequestModel(
+        bannerPhoto: '', identifier: '', iconPhoto: '', uidAuth: '');
+  }
+
   factory UserRequestModel.fromMap(Map<String, dynamic> map) {
     return UserRequestModel(
       bannerPhoto: map['bannerPhoto'] as String,

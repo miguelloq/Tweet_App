@@ -8,6 +8,7 @@ import 'package:tweet_app/src/features/tweet/services/follow_service.dart';
 import 'package:tweet_app/src/features/tweet/services/get_tweet_information_service.dart';
 import 'package:tweet_app/src/features/tweet/services/get_user_information_service.dart';
 import 'package:tweet_app/src/features/tweet/services/tweet_repository_firestore.dart';
+import 'package:tweet_app/src/features/tweet/store/drawer_store.dart';
 import 'package:tweet_app/src/features/tweet/store/full_tweet_store.dart';
 import 'package:tweet_app/src/features/tweet/store/profile_store.dart';
 import 'package:tweet_app/src/features/tweet/ui/screen/full_tweet_screen.dart';
@@ -33,6 +34,11 @@ class TweetModule extends Module {
         Bind.singleton((i) => GetTweetInformationService(
               tweetRepository: i<TweetRepositoryFirestore>(),
               storageRepository: i<CloudStorageRepositoryFirebase>(),
+            )),
+        Bind.lazySingleton((i) => DrawerStore(
+              uidAuth: i<DeviceCurrentUserInformation>().getCurrentUserUid()!,
+              followService: i<FollowService>(),
+              getUser: i<GetUserInformationService>(),
             )),
         Bind.lazySingleton((i) => HomeStore()),
         Bind.factory((i) => ProfileStore(
