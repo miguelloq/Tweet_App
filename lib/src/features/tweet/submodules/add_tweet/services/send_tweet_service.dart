@@ -36,6 +36,7 @@ class SendTweetService {
     required String bodyText,
     required String docTweetName,
     List<ImageRequestModel>? imageList,
+    bool isComment = false,
   }) async {
     String docNewTweetName = docTweetName;
     List<String> imageFullPaths = [];
@@ -51,6 +52,7 @@ class SendTweetService {
       bodyText: bodyText,
       postCreationTime: DateTime.now(),
       images: imageFullPaths,
+      isComment: isComment,
     );
   }
 
@@ -86,13 +88,19 @@ class SendTweetService {
     if (commentedDoc.exists) {
       if (imageList == null) {
         await _createTweetAndSendImages(
-            uidAuth: uidAuth, bodyText: bodyText, docTweetName: docTweetName);
+          uidAuth: uidAuth,
+          bodyText: bodyText,
+          docTweetName: docTweetName,
+          isComment: true,
+        );
       } else {
         await _createTweetAndSendImages(
-            uidAuth: uidAuth,
-            bodyText: bodyText,
-            docTweetName: docTweetName,
-            imageList: imageList);
+          uidAuth: uidAuth,
+          bodyText: bodyText,
+          docTweetName: docTweetName,
+          imageList: imageList,
+          isComment: true,
+        );
       }
 
       Map<String, dynamic> commentedMap =

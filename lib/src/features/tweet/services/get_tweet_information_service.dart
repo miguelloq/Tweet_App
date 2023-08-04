@@ -59,6 +59,7 @@ class GetTweetInformationService {
   Future<List<TweetRequestModel>> _getTweetsWithNetworkImage({
     required QuerySnapshot query,
     required bool isSortedByPostCreationTime,
+    required bool isIncludesComments,
   }) async {
     List<Map<String, dynamic>> listMapAllTweets = _getTweetsAsMap(query: query);
 
@@ -67,8 +68,13 @@ class GetTweetInformationService {
 
     List<TweetRequestModel> listAllTweetsWithNetworkImage = [];
     for (var tweet in listAllTweets) {
-      listAllTweetsWithNetworkImage
-          .add(await _imagePathToNetworkUrlForTweet(tweet: tweet));
+      if (isIncludesComments == false && tweet.isComment == false) {
+        listAllTweetsWithNetworkImage
+            .add(await _imagePathToNetworkUrlForTweet(tweet: tweet));
+      } else if (isIncludesComments == true) {
+        listAllTweetsWithNetworkImage
+            .add(await _imagePathToNetworkUrlForTweet(tweet: tweet));
+      }
     }
     if (isSortedByPostCreationTime) {
       listAllTweetsWithNetworkImage
@@ -77,24 +83,27 @@ class GetTweetInformationService {
     return listAllTweetsWithNetworkImage;
   }
 
-  Future<List<TweetRequestModel>> getAllTweetsWithNetworkImage({
-    required String uidAuth,
-    required bool isSortedByPostCreationTime,
-  }) async {
+  Future<List<TweetRequestModel>> getAllTweetsWithNetworkImage(
+      {required String uidAuth,
+      required bool isSortedByPostCreationTime,
+      bool isIncludesComments = false}) async {
     return await _getTweetsWithNetworkImage(
       query: await tweetRepository.readAllTweetsFromUser(uidAuth: uidAuth),
       isSortedByPostCreationTime: isSortedByPostCreationTime,
+      isIncludesComments: isIncludesComments,
     );
   }
 
   Future<List<TweetRequestModel>> getTweetsBasedOnIdWithNetworkImage({
     required List<String> documentIds,
     required bool isSortedByPostCreationTime,
+    bool isIncludesComments = false,
   }) async {
     if (documentIds.isNotEmpty) {
       return await _getTweetsWithNetworkImage(
         query: await tweetRepository.readTweetsBasedOnId(tweetIds: documentIds),
         isSortedByPostCreationTime: isSortedByPostCreationTime,
+        isIncludesComments: isIncludesComments,
       );
     } else {
       return [];

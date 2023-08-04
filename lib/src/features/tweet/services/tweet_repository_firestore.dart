@@ -13,6 +13,7 @@ class TweetRepositoryFirestore {
     required String bodyText,
     required DateTime postCreationTime,
     List<String>? images,
+    bool isComment = false,
   }) async {
     return await referenceTweets.doc(docTweetName).set({
       'ownerUid': uidAuth,
@@ -22,6 +23,7 @@ class TweetRepositoryFirestore {
       'likesValue': 0,
       'likesUidUsers': [],
       'commentDocNames': [],
+      'isComment': isComment,
     });
   }
 

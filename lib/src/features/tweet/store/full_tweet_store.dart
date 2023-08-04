@@ -56,8 +56,10 @@ abstract class _FullTweetStore with Store {
       required bool isSortedByPostCreationTime}) async {
     List<TweetRequestModel> tweetsWithNetworkImage =
         await getTweet.getTweetsBasedOnIdWithNetworkImage(
-            documentIds: tweet.commentDocNames,
-            isSortedByPostCreationTime: true);
+      documentIds: tweet.commentDocNames,
+      isSortedByPostCreationTime: true,
+      isIncludesComments: true,
+    );
     List<TweetPresentationModel> presentationTweets = [];
     for (var tweet in tweetsWithNetworkImage) {
       UserRequestModel tweetUser = await getUser.getUserWithNetworkImage(

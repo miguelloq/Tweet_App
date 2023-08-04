@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,17 +11,18 @@ class TweetRequestModel {
   final String text;
   final String uidPoster;
   final List<String> commentDocNames;
+  final bool isComment;
 
-  TweetRequestModel({
-    required this.docName,
-    required this.images,
-    required this.likesUidUsers,
-    required this.likesValue,
-    required this.postCreationTime,
-    required this.text,
-    required this.uidPoster,
-    required this.commentDocNames,
-  });
+  TweetRequestModel(
+      {required this.docName,
+      required this.images,
+      required this.likesUidUsers,
+      required this.likesValue,
+      required this.postCreationTime,
+      required this.text,
+      required this.uidPoster,
+      required this.commentDocNames,
+      required this.isComment});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -48,6 +48,7 @@ class TweetRequestModel {
       uidPoster: map['ownerUid'] as String,
       commentDocNames:
           List<String>.from(map['commentDocNames'] as List<dynamic>),
+      isComment: map['isComment'] as bool,
     );
   }
 
@@ -65,22 +66,23 @@ class TweetRequestModel {
     String? text,
     String? uidPoster,
     List<String>? commentDocNames,
+    bool? isComment,
   }) {
     return TweetRequestModel(
-      docName: docName ?? this.docName,
-      images: images ?? this.images,
-      likesUidUsers: likesUidUsers ?? this.likesUidUsers,
-      likesValue: likesValue ?? this.likesValue,
-      postCreationTime: postCreationTime ?? this.postCreationTime,
-      text: text ?? this.text,
-      uidPoster: uidPoster ?? this.uidPoster,
-      commentDocNames: commentDocNames ?? this.commentDocNames,
-    );
+        docName: docName ?? this.docName,
+        images: images ?? this.images,
+        likesUidUsers: likesUidUsers ?? this.likesUidUsers,
+        likesValue: likesValue ?? this.likesValue,
+        postCreationTime: postCreationTime ?? this.postCreationTime,
+        text: text ?? this.text,
+        uidPoster: uidPoster ?? this.uidPoster,
+        commentDocNames: commentDocNames ?? this.commentDocNames,
+        isComment: isComment ?? this.isComment);
   }
 
   @override
   String toString() {
-    return 'TweetRequestModel(docName: $docName, images: $images, likesUidUsers: $likesUidUsers, likesValue: $likesValue, postCreationTime: $postCreationTime, text: $text, uidPoster: $uidPoster)';
+    return 'TweetRequestModel(docName: $docName, images: $images, likesUidUsers: $likesUidUsers, likesValue: $likesValue, postCreationTime: $postCreationTime, text: $text, uidPoster: $uidPoster, commentDocNames: $commentDocNames, isComment: $isComment)';
   }
 
   DateTime getTweetDate() {
