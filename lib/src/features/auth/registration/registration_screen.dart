@@ -145,23 +145,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: AuthButton(
-                    labelButton: registrationStore.screenState ==
-                            RegistrationState.loading
-                        ? 'Loading'
-                        : 'Create new Account',
-                    onTap: () {
-                      if (registrationStore.screenState !=
-                              RegistrationState.loading &&
-                          registrationStore.screenState !=
-                              RegistrationState.success) {
-                        if (_formKey.currentState!.validate()) {
-                          registrationStore.registrationAction();
+              Observer(
+                builder: (_) => Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: AuthButton(
+                      labelButton: registrationStore.screenState ==
+                              RegistrationState.loading
+                          ? 'Loading'
+                          : 'Create new Account',
+                      onTap: () {
+                        if (registrationStore.screenState !=
+                                RegistrationState.loading &&
+                            registrationStore.screenState !=
+                                RegistrationState.success) {
+                          if (_formKey.currentState!.validate()) {
+                            registrationStore.registrationAction();
+                          }
                         }
-                      }
-                    }),
+                      }),
+                ),
               ),
               Text.rich(
                 TextSpan(
