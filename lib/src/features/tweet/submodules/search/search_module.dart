@@ -9,11 +9,13 @@ import 'package:tweet_app/src/features/tweet/submodules/search/store/search_stor
 class SearchModule extends WidgetModule {
   @override
   List<Bind> get binds => [
-        Bind.singleton((i) =>
-            UserFilterService(userRepository: i<UserRepositoryFirestore>())),
+        Bind.singleton((i) => UserFilterService(
+              userRepository: i<UserRepositoryFirestore>(),
+              getUser: i<GetUserInformationService>(),
+            )),
         Bind.lazySingleton((i) => SearchStore(
-            filterService: i<UserFilterService>(),
-            getUser: i<GetUserInformationService>()))
+              filterService: i<UserFilterService>(),
+            ))
       ];
 
   @override

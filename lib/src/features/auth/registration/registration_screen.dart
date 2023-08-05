@@ -148,7 +148,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: AuthButton(
-                    labelButton: 'Create new Account',
+                    labelButton: registrationStore.screenState ==
+                            RegistrationState.loading
+                        ? 'Loading'
+                        : 'Create new Account',
                     onTap: () {
                       if (registrationStore.screenState !=
                               RegistrationState.loading &&
@@ -177,6 +180,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ],
                 ),
               ),
+              const SizedBox(height: 25),
             ],
           ),
         ),

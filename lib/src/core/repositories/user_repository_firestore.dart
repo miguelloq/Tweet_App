@@ -10,10 +10,12 @@ class UserRepositoryFirestore {
       {required this.firestoreInstance, required this.storageRepository})
       : referenceUsers = firestoreInstance.collection('users');
 
-  Future<bool> isIdentifierAvailable({required String identifierValue}) async {
+  Future<bool> isIdentifierAvailable({
+    required String identifierValue,
+  }) async {
     try {
       final QuerySnapshot snapshot = await referenceUsers
-          .where("identifier", isEqualTo: '@$identifierValue')
+          .where("identifier", isEqualTo: identifierValue)
           .limit(1)
           .get();
 
@@ -74,13 +76,11 @@ class UserRepositoryFirestore {
   }
 
   Future<QuerySnapshot> readUsersBasedOnIdentifier(
-      {required String whereInput}) async {
+      {required String queryInput}) async {
     return await referenceUsers
-        .where(
-          'identifier',
-          isGreaterThanOrEqualTo: whereInput,
-          isLessThanOrEqualTo: whereInput + '\uf8ff',
-        )
+        .orderBy('identifier')
+        .startAt([queryInput])
+        .endAt(['$queryInput\uf8ff'])
         .limit(10)
         .get();
   }

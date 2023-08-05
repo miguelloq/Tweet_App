@@ -1,15 +1,43 @@
-import 'package:tweet_app/src/features/tweet/services/get_user_information_service.dart';
+import 'package:mobx/mobx.dart';
+import 'package:tweet_app/src/features/tweet/models/user_request_model.dart';
 import 'package:tweet_app/src/features/tweet/submodules/search/services/user_filter_service.dart';
 
-class SearchStore {
+part 'search_store.g.dart';
+
+enum SearchState { idle, success, loading, error, noUserFound }
+
+class SearchStore = _SearchStore with _$SearchStore;
+
+abstract class _SearchStore with Store {
   final UserFilterService filterService;
 
-  final GetUserInformationService getUser;
+  _SearchStore({required this.filterService});
 
-  SearchStore({required this.filterService, required this.getUser});
+  @observable
+  SearchState searchState = SearchState.idle;
 
-  // a({required String whereInput}) async {
-  //   List<String> a = await filterService.get(whereInput: whereInput);
-  //   print('SearchStore: $a');
-  // }
+  List<UserRequestModel> findedUsers = [];
+
+  @action
+  void setScreenState({required SearchState newState}) {
+    searchState = newState;
+  }
+
+  loadSearchedUsers({required String searchInput}) async {
+    setScreenState(newState: SearchState.loading);
+    try {
+      if (searchInput == '') {
+        setScreenState(newState: SearchState.idle);
+      } else {
+        findedUsers = await filterService.findedUsersWithProfileNetworkUrl(
+          searchInput: searchInput,
+        );
+        findedUsers.isNotEmpty
+            ? setScreenState(newState: SearchState.success)
+            : setScreenState(newState: SearchState.noUserFound);
+      }
+    } on Exception {
+      setScreenState(newState: SearchState.error);
+    }
+  }
 }

@@ -38,14 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             FeedModule(),
             SearchModule(),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Modular.to
-                      .pushNamed('./profile/ivPbVnrLH7hWNaYtzJvq435Bi4Z2');
-                },
-                child: const Text('Profile'),
-              ),
+            const Center(
+              child: Text('Something interesting is going to happen here!'),
             ),
           ],
         ),

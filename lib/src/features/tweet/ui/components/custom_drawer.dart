@@ -92,5 +92,3 @@ class _CustomDrawerState extends State<CustomDrawer> {
     );
   }
 }
-
-Widget buildProfileInformation() => Container();
