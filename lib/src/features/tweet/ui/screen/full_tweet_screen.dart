@@ -25,10 +25,11 @@ class FullTweetScreen extends StatefulWidget {
 }
 
 class _TweetScreenState extends State<FullTweetScreen> {
-  FullTweetStore tweetStore = Modular.get<FullTweetStore>();
+  late final FullTweetStore tweetStore;
 
   @override
   void initState() {
+    tweetStore = Modular.get<FullTweetStore>();
     tweetStore.loadInformation(tweetDocName: widget.docNameTweet);
     super.initState();
   }

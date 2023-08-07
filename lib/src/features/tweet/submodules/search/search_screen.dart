@@ -14,10 +14,11 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  SearchStore searchStore = Modular.get<SearchStore>();
+  late final SearchStore searchStore;
 
   @override
   void initState() {
+    searchStore = Modular.get<SearchStore>();
     autorun((_) {
       if (searchStore.searchState == SearchState.error) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

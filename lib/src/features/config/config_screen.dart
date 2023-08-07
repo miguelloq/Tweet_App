@@ -10,7 +10,13 @@ class ConfigScreen extends StatefulWidget {
 }
 
 class _ConfigScreenState extends State<ConfigScreen> {
-  final logoutService = Modular.get<LogoutService>();
+  late final LogoutService logoutService;
+
+  @override
+  void initState() {
+    logoutService = Modular.get<LogoutService>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

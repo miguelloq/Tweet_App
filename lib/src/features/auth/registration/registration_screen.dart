@@ -19,11 +19,12 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  final RegistrationStore registrationStore = Modular.get<RegistrationStore>();
+  late final RegistrationStore registrationStore;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
+    registrationStore = Modular.get<RegistrationStore>();
     autorun((_) {
       if (registrationStore.screenState == RegistrationState.error) {
         showAuthErrorSnackBar(

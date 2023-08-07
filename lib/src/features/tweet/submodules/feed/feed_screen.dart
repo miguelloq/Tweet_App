@@ -16,10 +16,11 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
-  FeedStore feedStore = Modular.get<FeedStore>();
+  late final FeedStore feedStore;
 
   @override
   void initState() {
+    feedStore = Modular.get<FeedStore>();
     feedStore.loadFeed(feedUidAuth: widget.feedOwnerUid);
     super.initState();
   }

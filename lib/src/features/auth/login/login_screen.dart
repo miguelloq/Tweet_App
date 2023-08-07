@@ -18,11 +18,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final LoginStore loginStore = Modular.get<LoginStore>();
+  late final LoginStore loginStore;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
+    loginStore = Modular.get<LoginStore>();
     autorun((_) {
       if (loginStore.screenState == LoginState.error) {
         showAuthErrorSnackBar(

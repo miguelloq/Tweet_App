@@ -13,11 +13,11 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  final DrawerStore drawerStore = Modular.get();
+  late final DrawerStore drawerStore;
 
   @override
   void initState() {
-    super.initState();
+    drawerStore = Modular.get();
     drawerStore.loadInformation();
     autorun((_) {
       if (drawerStore.screenState == DrawerScreenState.error) {
@@ -32,6 +32,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
         );
       }
     });
+    super.initState();
   }
 
   @override

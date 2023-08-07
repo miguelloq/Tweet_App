@@ -16,11 +16,11 @@ class AddTweetScreen extends StatefulWidget {
 }
 
 class _AddTweetScreenState extends State<AddTweetScreen> {
-  final AddTweetStore addTweetStore = Modular.get<AddTweetStore>();
+  late final AddTweetStore addTweetStore;
 
   @override
   void initState() {
-    super.initState();
+    addTweetStore = Modular.get<AddTweetStore>();
     autorun((_) {
       if (addTweetStore.addTweetState == AddTweetState.error) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -43,6 +43,7 @@ class _AddTweetScreenState extends State<AddTweetScreen> {
       ));
       Modular.to.pop();
     });
+    super.initState();
   }
 
   @override

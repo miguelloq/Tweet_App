@@ -14,10 +14,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final HomeStore homeStore = Modular.get<HomeStore>();
+  late final HomeStore homeStore;
 
   @override
   void initState() {
+    homeStore = Modular.get<HomeStore>();
     super.initState();
   }
 

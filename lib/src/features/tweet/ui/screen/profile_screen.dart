@@ -19,10 +19,11 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  ProfileStore profileStore = Modular.get<ProfileStore>();
+  late final ProfileStore profileStore;
 
   @override
   void initState() {
+    profileStore = Modular.get<ProfileStore>();
     profileStore.loadInformation(
         uidProfileOwner: widget.uidOwnerProfile, uidVisitor: widget.uidVisitor);
     super.initState();
